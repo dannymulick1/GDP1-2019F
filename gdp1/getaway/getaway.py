@@ -51,18 +51,38 @@ class Block(pygame.sprite.Sprite):
 
 class Player(pygame.sprite.Sprite):
     """ This class represents the player. """
+    X_CHANGE = 100
+    x_pos = 1
+    x_pos_list = [(SCREEN_WIDTH / 2) - X_CHANGE, SCREEN_WIDTH / 2, (SCREEN_WIDTH / 2) + X_CHANGE]
+
 
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface([20, 20])
+        self.image = pygame.Surface([20, 40])
         self.image.fill(RED)
         self.rect = self.image.get_rect()
 
     def update(self):
         """ Update the player location. """
-        pos = pygame.mouse.get_pos()
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
+        # pos = pygame.mouse.get_pos()
+        # self.rect.x = pos[0]
+        # self.rect.y = pos[1]
+        self.rect.x = Player.x_pos_list[Player.x_pos]
+        self.rect.y = SCREEN_HEIGHT - (2 * self.rect.height)
+
+    def left(self):
+        if Player.x_pos > 0:
+            Player.x_pos -= 1
+        else:
+            pass
+            # Suggestion: Implement minor shake or play a sound to denote you can't go left
+
+    def right(self):
+        if Player.x_pos < 2:
+            Player.x_pos += 1
+        else:
+            pass
+            # Suggestion: Implement minor shake or play a sound to denote you can't go right
 
 
 class Game(object):
@@ -106,6 +126,11 @@ class Game(object):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.game_over:
                     self.__init__()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                    self.player.left()
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                    self.player.right()
 
         return False
 
@@ -123,7 +148,7 @@ class Game(object):
 
             # Check the list of collisions.
             for block in blocks_hit_list:
-                self.sound.play()
+                # self.sound.play()
                 self.score += 1
                 print(self.score)
                 # You can do something with "block" here.
