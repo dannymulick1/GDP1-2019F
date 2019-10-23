@@ -16,6 +16,9 @@ http://programarcadegames.com/python_examples/f.php?file=platform_jumper.py
 http://programarcadegames.com/python_examples/f.php?file=platform_scroller.py
 http://programarcadegames.com/python_examples/f.php?file=platform_moving.py
 http://programarcadegames.com/python_examples/sprite_sheets/
+
+Authored edits made by: Danny Mulick
+
 """
 import pygame
 
