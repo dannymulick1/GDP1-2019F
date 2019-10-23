@@ -76,7 +76,7 @@ class Game(object):
 
         self.score = 0
         self.game_over = False
-        self.sound = pygame.mixer.Sound("laser5.ogg")
+        # self.sound = pygame.mixer.Sound()
 
         # Create sprite lists
         self.block_list = pygame.sprite.Group()
