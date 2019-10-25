@@ -17,7 +17,7 @@ SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 500
 
 FEEDBACK_X = 0
-FEEDBACK_Y = 450
+FEEDBACK_Y = 430
 
 
 # --- Classes ---
@@ -51,10 +51,26 @@ class Wall(pygame.sprite.Sprite):
             self.reset_pos()
 
 
+def move_left():
+    if Player.x_pos > 0:
+        Player.x_pos -= 1
+    else:
+        pass
+        # Suggestion: Implement minor shake or play a sound to denote you can't go left
+
+
+def move_right():
+    if Player.x_pos < 2:
+        Player.x_pos += 1
+    else:
+        pass
+        # Suggestion: Implement minor shake or play a sound to denote you can't go right
+
+
 class Player(pygame.sprite.Sprite):
     """ This class represents the player. """
     X_CHANGE = 100
-    x_pos = 1
+
     x_pos_list = [(SCREEN_WIDTH / 2) - X_CHANGE, SCREEN_WIDTH / 2, (SCREEN_WIDTH / 2) + X_CHANGE]
 
     def __init__(self):
@@ -62,25 +78,13 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.Surface([20, 40])
         self.image.fill(RED)
         self.rect = self.image.get_rect()
+        self.rect.y = SCREEN_HEIGHT - (2 * self.rect.height)
+        self.lives = 3
+        self.x_pos = 1
 
     def update(self):
         """ Update the player location. """
-        self.rect.x = Player.x_pos_list[Player.x_pos]
-        self.rect.y = SCREEN_HEIGHT - (2 * self.rect.height)
-
-    def left(self):
-        if Player.x_pos > 0:
-            Player.x_pos -= 1
-        else:
-            pass
-            # Suggestion: Implement minor shake or play a sound to denote you can't go left
-
-    def right(self):
-        if Player.x_pos < 2:
-            Player.x_pos += 1
-        else:
-            pass
-            # Suggestion: Implement minor shake or play a sound to denote you can't go right
+        self.rect.x = Player.x_pos_list[self.x_pos]
 
 
 class Game(object):
@@ -108,6 +112,7 @@ class Game(object):
 
         # Create the player
         self.player = Player()
+        self.lives = self.player.lives
         self.all_sprites_list.add(self.player)
 
     def process_events(self):
@@ -122,9 +127,9 @@ class Game(object):
                     self.__init__()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    self.player.left()
+                    move_left()
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    self.player.right()
+                    move_right()
 
         return False
 
@@ -143,8 +148,11 @@ class Game(object):
             # Check the list of collisions.
             if len(blocks_hit_list) > 0:
                 self.score += len(blocks_hit_list)
+                self.lives -= 1
 
-            if len(self.block_list) == 0:
+            # if len(self.block_list) == 0:
+            #     self.game_over = True
+            if self.lives < 1:
                 self.game_over = True
 
     def display_frame(self, screen):
@@ -165,14 +173,19 @@ class Game(object):
         pygame.display.flip()
 
     def display_feedback(self, screen_in):
-
-        pygame.draw.rect(screen_in, BLUE, [FEEDBACK_X, FEEDBACK_Y, 100, 50], 0)
+        """ Display feedback about the current game session, score and remaining lives"""
+        pygame.draw.rect(screen_in, BLUE, [FEEDBACK_X, FEEDBACK_Y, 100, 70], 0)
         score_str = "Score: " + str(self.score)
         font = pygame.font.SysFont("serif", 25)
-        text = font.render(score_str, True, WHITE)
+        score_text = font.render(score_str, True, WHITE)
         score_x = FEEDBACK_X + 5
         score_y = FEEDBACK_Y + 5
-        screen_in.blit(text, [score_x, score_y])
+        screen_in.blit(score_text, [score_x, score_y])
+        lives_str = "Lives: " + str(self.lives)
+        lives_text = font.render(lives_str, True, WHITE)
+        lives_x = score_x
+        lives_y = score_y + 25
+        screen_in.blit(lives_text, [lives_x, lives_y])
 
 
 def main():

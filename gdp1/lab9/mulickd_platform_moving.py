@@ -56,7 +56,7 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(RED)
 
         # Set a reference to the image rect.
-        self.rect = self.image.get_rect()
+        self.rect = self.image
 
         # Set speed vector of player
         self.change_x = 0
@@ -155,7 +155,7 @@ class Platform(pygame.sprite.Sprite):
         self.image = pygame.Surface([width, height])
         self.image.fill(GREEN)
 
-        self.rect = self.image.get_rect()
+        self.rect = self.image
 
 
 class MovingPlatform(Platform):
