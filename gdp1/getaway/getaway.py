@@ -30,8 +30,10 @@ class WallGroup:
         [1, 0, 1],
         [1, 1, 0]
     ]
+
     def __init__(self):
         pass
+
 
 class Wall(pygame.sprite.Sprite):
     """ This class represents a wall made to oppose our player. """
@@ -47,7 +49,7 @@ class Wall(pygame.sprite.Sprite):
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
-        self.style = Wall.WALL_STYLES[random.randint(0, 6)]
+        self.checked = False
 
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
@@ -55,6 +57,7 @@ class Wall(pygame.sprite.Sprite):
         # self.rect.y = -
         self.rect.y = random.randrange(-20, -200, -80)
         self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
+        self.checked = False
 
     def update(self):
         """ Automatically called when we need to move the block. """
@@ -67,7 +70,6 @@ class Wall(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     """ This class represents the player. """
     X_CHANGE = 100
-
     x_pos_list = [(SCREEN_WIDTH / 2) - X_CHANGE, SCREEN_WIDTH / 2, (SCREEN_WIDTH / 2) + X_CHANGE]
 
     def __init__(self):
@@ -109,6 +111,7 @@ class Game(object):
 
         self.score = 0
         self.game_over = False
+        self.game_won = False
         # self.sound = pygame.mixer.Sound()
 
         # Create sprite lists
@@ -135,7 +138,7 @@ class Game(object):
             if event.type == pygame.QUIT:
                 return True
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.game_over:
+                if self.game_over or self.game_won:
                     self.__init__()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
@@ -155,34 +158,49 @@ class Game(object):
             self.all_sprites_list.update()
 
             # See if the player block has collided with anything.
-            blocks_hit_list = pygame.sprite.spritecollide(self.player, self.wall_list, True)
+            wall_hit_list = pygame.sprite.spritecollide(self.player, self.wall_list, True)
 
             # Check the list of collisions.
-            for block in blocks_hit_list:
-                self.score += len(blocks_hit_list)
+            for _ in wall_hit_list:
+                # self.score += len(wall_hit_list)
                 self.lives -= 1
                 wall = Wall()
                 self.wall_list.add(wall)
                 self.all_sprites_list.add(wall)
 
+            for wall in self.wall_list:
+                if wall.rect.y > self.player.rect.y + self.player.rect.height:
+                    if not wall.checked:
+                        self.score += 1
+                        wall.checked = True
+
             if self.lives < 1:
                 self.game_over = True
+
+            if self.score > 10:
+                self.game_won = True
 
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
         screen.fill(WHITE)
 
         if self.game_over:
-            # font = pygame.font.Font("Serif", 25)
             font = pygame.font.SysFont("serif", 25)
             text = font.render("Game Over, click to restart", True, BLACK)
             center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
             center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
             screen.blit(text, [center_x, center_y])
 
-        if not self.game_over:
+        if self.game_won:
+            font = pygame.font.SysFont("serif", 25)
+            text = font.render("You won! Click to restart", True, BLACK)
+            center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
+            center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
+            screen.blit(text, [center_x, center_y])
+
+        if not self.game_over and not self.game_won:
             self.all_sprites_list.draw(screen)
-        self.display_feedback(screen)
+            self.display_feedback(screen)
         pygame.display.flip()
 
     def display_feedback(self, screen_in):
