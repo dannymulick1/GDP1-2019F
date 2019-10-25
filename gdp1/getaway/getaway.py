@@ -23,27 +23,29 @@ FEEDBACK_Y = 450
 # --- Classes ---
 
 
-class Block(pygame.sprite.Sprite):
-    """ This class represents a simple block the player collects. """
-    WIDTH = 20
+class Wall(pygame.sprite.Sprite):
+    """ This class represents a wall made to oppose our player. """
+    WIDTH = 60
     HEIGHT = 20
+    BASE_SPEED = 2
 
     def __init__(self):
         """ Constructor, create the image of the block. """
         super().__init__()
-        self.image = pygame.Surface([Block.WIDTH, Block.HEIGHT])
+        self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
+        self.reset_pos()
 
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
             the screen. """
         self.rect.y = random.randrange(-300, -20)
-        self.rect.x = random.randrange(SCREEN_WIDTH - Block.WIDTH)
+        self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH/2
 
     def update(self):
         """ Automatically called when we need to move the block. """
-        self.rect.y += 1
+        self.rect.y += Wall.BASE_SPEED
 
         if self.rect.y > SCREEN_HEIGHT + self.rect.height:
             self.reset_pos()
@@ -63,9 +65,6 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         """ Update the player location. """
-        # pos = pygame.mouse.get_pos()
-        # self.rect.x = pos[0]
-        # self.rect.y = pos[1]
         self.rect.x = Player.x_pos_list[Player.x_pos]
         self.rect.y = SCREEN_HEIGHT - (2 * self.rect.height)
 
@@ -102,12 +101,8 @@ class Game(object):
         self.all_sprites_list = pygame.sprite.Group()
 
         # Create the block sprites
-        for i in range(50):
-            block = Block()
-
-            block.rect.x = random.randrange(SCREEN_WIDTH - Block.WIDTH)
-            block.rect.y = random.randrange(-300, SCREEN_HEIGHT)
-
+        for _ in range(10):
+            block = Wall()
             self.block_list.add(block)
             self.all_sprites_list.add(block)
 
