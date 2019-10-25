@@ -1,6 +1,17 @@
 """
 Getaway! The driving, wall avoiding game
 Author: Danny Mulick
+
+b. Version - 0.1.2
+c. What the code does
+ - This game runs the first level of the code so far. It spawns the player, the obstacles, and moves them across the
+     screen
+d. A brief description of how to play the game
+ - You play the game using either WASD or the arrow keys, moving left or right in order to avoid oncoming walls
+e. What’s not working and known bugs and limitations at this stage
+  - Bug - sometimes walls spawn in such a manner that reduces the space available for a player to use to avoid them.
+    - Potential fix / todo - implement a way to create a group of walls instead of individual. Can design patterns to use
+f. What’s left at this stage, not what you might or might not do, etc. but what you plan to do
 """
 
 import pygame
