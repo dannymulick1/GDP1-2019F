@@ -4,14 +4,19 @@ Author: Danny Mulick
 
 b. Version - 0.1.2
 c. What the code does
- - This game runs the first level of the code so far. It spawns the player, the obstacles, and moves them across the
-     screen
+ - This game runs the first level (Easy) of the game so far. It spawns the player, the obstacles, and moves them down
+    the screen.
 d. A brief description of how to play the game
- - You play the game using either WASD or the arrow keys, moving left or right in order to avoid oncoming walls
+ - You play the game using either WASD or the arrow keys, moving left or right in order to avoid oncoming walls.
+ - Score 10 points in order to win this level, or lose all three lives to lose it.
 e. What’s not working and known bugs and limitations at this stage
   - Bug - sometimes walls spawn in such a manner that reduces the space available for a player to use to avoid them.
     - Potential fix / todo - implement a way to create a group of walls instead of individual. Can design patterns to use
 f. What’s left at this stage, not what you might or might not do, etc. but what you plan to do
+  - Implement main menu
+  - Implement other difficulty levels
+  - Add sound design for music and sounds for point scoring
+  - Add more detail to game over and
 """
 
 import pygame
