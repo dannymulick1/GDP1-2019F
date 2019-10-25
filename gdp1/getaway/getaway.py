@@ -51,20 +51,7 @@ class Wall(pygame.sprite.Sprite):
             self.reset_pos()
 
 
-def move_left():
-    if Player.x_pos > 0:
-        Player.x_pos -= 1
-    else:
-        pass
-        # Suggestion: Implement minor shake or play a sound to denote you can't go left
 
-
-def move_right():
-    if Player.x_pos < 2:
-        Player.x_pos += 1
-    else:
-        pass
-        # Suggestion: Implement minor shake or play a sound to denote you can't go right
 
 
 class Player(pygame.sprite.Sprite):
@@ -85,6 +72,20 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         """ Update the player location. """
         self.rect.x = Player.x_pos_list[self.x_pos]
+
+    def move_left(self):
+        if self.x_pos > 0:
+            self.x_pos -= 1
+        else:
+            pass
+            # Suggestion: Implement minor shake or play a sound to denote you can't go left
+
+    def move_right(self):
+        if self.x_pos < 2:
+            self.x_pos += 1
+        else:
+            pass
+            # Suggestion: Implement minor shake or play a sound to denote you can't go right
 
 
 class Game(object):
@@ -127,9 +128,9 @@ class Game(object):
                     self.__init__()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    move_left()
+                    self.player.move_left()
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    move_right()
+                    self.player.move_right()
 
         return False
 
