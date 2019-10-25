@@ -21,14 +21,7 @@ FEEDBACK_Y = 430
 
 
 # --- Classes ---
-
-
-class Wall(pygame.sprite.Sprite):
-    """ This class represents a wall made to oppose our player. """
-    WIDTH = 60
-    HEIGHT = 20
-    BASE_SPEED = 2
-    SPACER = 80
+class WallGroup:
     WALL_STYLES = [
         [1, 0, 0],
         [0, 1, 0],
@@ -37,6 +30,15 @@ class Wall(pygame.sprite.Sprite):
         [1, 0, 1],
         [1, 1, 0]
     ]
+    def __init__(self):
+        pass
+
+class Wall(pygame.sprite.Sprite):
+    """ This class represents a wall made to oppose our player. """
+    WIDTH = 60
+    HEIGHT = 20
+    BASE_SPEED = 2
+    SPACER = 80
 
     def __init__(self):
         """ Constructor, create the image of the block. """
@@ -45,6 +47,7 @@ class Wall(pygame.sprite.Sprite):
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
+        self.style = Wall.WALL_STYLES[random.randint(0, 6)]
 
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
