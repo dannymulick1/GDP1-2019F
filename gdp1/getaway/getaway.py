@@ -29,6 +29,14 @@ class Wall(pygame.sprite.Sprite):
     HEIGHT = 20
     BASE_SPEED = 2
     SPACER = 80
+    WALL_STYLES = [
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 0, 1],
+        [0, 1, 1],
+        [1, 0, 1],
+        [1, 1, 0]
+    ]
 
     def __init__(self):
         """ Constructor, create the image of the block. """
