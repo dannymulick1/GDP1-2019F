@@ -28,6 +28,7 @@ class Wall(pygame.sprite.Sprite):
     WIDTH = 60
     HEIGHT = 20
     BASE_SPEED = 2
+    SPACER = 80
 
     def __init__(self):
         """ Constructor, create the image of the block. """
@@ -35,13 +36,13 @@ class Wall(pygame.sprite.Sprite):
         self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        self.reset_pos()
+        self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
 
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
             the screen. """
-        self.rect.y = random.randrange(-300, -20)
-        self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH/2
+        self.rect.y = -20
+        self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
 
     def update(self):
         """ Automatically called when we need to move the block. """
@@ -49,9 +50,6 @@ class Wall(pygame.sprite.Sprite):
 
         if self.rect.y > SCREEN_HEIGHT + self.rect.height:
             self.reset_pos()
-
-
-
 
 
 class Player(pygame.sprite.Sprite):
@@ -102,14 +100,15 @@ class Game(object):
         # self.sound = pygame.mixer.Sound()
 
         # Create sprite lists
-        self.block_list = pygame.sprite.Group()
+        self.wall_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
 
         # Create the block sprites
-        for _ in range(10):
-            block = Wall()
-            self.block_list.add(block)
-            self.all_sprites_list.add(block)
+        for i in range(10):
+            wall = Wall()
+            wall.rect.y = 0 - Wall.SPACER * i
+            self.wall_list.add(wall)
+            self.all_sprites_list.add(wall)
 
         # Create the player
         self.player = Player()
@@ -144,15 +143,16 @@ class Game(object):
             self.all_sprites_list.update()
 
             # See if the player block has collided with anything.
-            blocks_hit_list = pygame.sprite.spritecollide(self.player, self.block_list, True)
+            blocks_hit_list = pygame.sprite.spritecollide(self.player, self.wall_list, True)
 
             # Check the list of collisions.
-            if len(blocks_hit_list) > 0:
+            for block in blocks_hit_list:
                 self.score += len(blocks_hit_list)
                 self.lives -= 1
+                wall = Wall()
+                self.wall_list.add(wall)
+                self.all_sprites_list.add(wall)
 
-            # if len(self.block_list) == 0:
-            #     self.game_over = True
             if self.lives < 1:
                 self.game_over = True
 
