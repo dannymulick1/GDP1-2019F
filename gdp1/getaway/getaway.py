@@ -41,7 +41,8 @@ class Wall(pygame.sprite.Sprite):
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
             the screen. """
-        self.rect.y = -20
+        # self.rect.y = -
+        self.rect.y = random.randrange(-20, -200, -80)
         self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
 
     def update(self):
