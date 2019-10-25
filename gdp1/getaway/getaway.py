@@ -55,7 +55,6 @@ class Player(pygame.sprite.Sprite):
     x_pos = 1
     x_pos_list = [(SCREEN_WIDTH / 2) - X_CHANGE, SCREEN_WIDTH / 2, (SCREEN_WIDTH / 2) + X_CHANGE]
 
-
     def __init__(self):
         super().__init__()
         self.image = pygame.Surface([20, 40])
@@ -147,11 +146,8 @@ class Game(object):
             blocks_hit_list = pygame.sprite.spritecollide(self.player, self.block_list, True)
 
             # Check the list of collisions.
-            for block in blocks_hit_list:
-                # self.sound.play()
-                self.score += 1
-                print(self.score)
-                # You can do something with "block" here.
+            if len(blocks_hit_list) > 0:
+                self.score += len(blocks_hit_list)
 
             if len(self.block_list) == 0:
                 self.game_over = True
