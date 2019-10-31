@@ -17,6 +17,10 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 
+SEGMENT_COUNT = 15
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
 # Set the width and height of each snake segment
 segment_width = 15
 segment_height = 15
@@ -70,35 +74,52 @@ class HeadSegment(Segment):
 pygame.init()
 
 # Create an 800x600 sized screen
-screen = pygame.display.set_mode([800, 600])
+screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
 # Set the title of the window
 pygame.display.set_caption('Snake Example')
-
+snake_segments = []
 allspriteslist = pygame.sprite.Group()
 segment_group = pygame.sprite.Group()
 
-# Create an initial snake
-snake_segments = []
-for i in range(15):
-    x = 250 - (segment_width + segment_margin) * i
-    y = 30
-    if i == 0:
-        segment = HeadSegment(x, y)
-    else:
-        segment = Segment(x, y)
-    snake_segments.append(segment)
-    allspriteslist.add(segment)
-    segment_group.add(segment)
+
+def snake_init():
+    global game_over, snake_segments, x_change, y_change
+    x_change = segment_width + segment_margin
+    y_change = 0
+    game_over = False
+    allspriteslist.empty()
+    segment_group.empty()
+
+    # Create an initial snake
+    snake_segments = []
+    for i in range(SEGMENT_COUNT):
+        x = 250 - (segment_width + segment_margin) * i
+        y = 30
+        if i == SEGMENT_COUNT - 1:
+            segment = HeadSegment(x, y)
+        else:
+            segment = Segment(x, y)
+        snake_segments.append(segment)
+        allspriteslist.add(segment)
+        segment_group.add(segment)
+
+
+snake_init()
 
 clock = pygame.time.Clock()
 done = False
+game_over = False
 
 while not done:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if game_over:
+                snake_init()
 
         # Set the speed based on the key pressed
         # We want the speed to be enough that we move a full
@@ -136,6 +157,7 @@ while not done:
 
     if head_collision_detect:
         print("Game over")
+        game_over = True
 
     else:
         allspriteslist.add(head)
@@ -145,7 +167,15 @@ while not done:
     # Clear screen
     screen.fill(BLACK)
 
-    allspriteslist.draw(screen)
+    if game_over:
+        font = pygame.font.SysFont("serif", 25)
+        text = font.render("Game Over, click to restart", True, WHITE)
+        center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
+        center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
+        screen.blit(text, [center_x, center_y])
+
+    else:
+        allspriteslist.draw(screen)
 
     # Flip screen
     pygame.display.flip()
