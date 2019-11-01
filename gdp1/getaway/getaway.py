@@ -48,7 +48,11 @@ class WallGroup:
     ]
 
     def __init__(self):
-        pass
+        sel = random.randint(0, 5)
+        self.style = Wall.WALL_STYLES[sel]
+        for i in range(len(self.style)):
+            if self.style[i] == 1:
+                item = Wall(i)
 
 
 class Wall(pygame.sprite.Sprite):
@@ -58,13 +62,21 @@ class Wall(pygame.sprite.Sprite):
     BASE_SPEED = 2
     SPACER = 80
 
-    def __init__(self):
+    # def __init__(self):
+    #     """ Constructor, create the image of the block. """
+    #     super().__init__()
+    #     self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
+    #     self.image.fill(BLACK)
+    #     self.rect = self.image.get_rect()
+    #     self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
+    #     self.checked = False
+    def __init__(self, x_in):
         """ Constructor, create the image of the block. """
         super().__init__()
         self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
+        self.rect.x = Player.x_pos_list[x_in] - Wall.WIDTH / 2
         self.checked = False
 
     def reset_pos(self):
@@ -136,10 +148,10 @@ class Game(object):
 
         # Create the block sprites
         for i in range(10):
-            wall = Wall()
-            wall.rect.y = 0 - Wall.SPACER * i
-            self.wall_list.add(wall)
-            self.all_sprites_list.add(wall)
+            # wall = Wall()
+            # wall.rect.y = 0 - Wall.SPACER * i
+            # self.wall_list.add(wall)
+            # self.all_sprites_list.add(wall)
 
         # Create the player
         self.player = Player()
