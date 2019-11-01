@@ -64,7 +64,6 @@ class WallGroup(pygame.sprite.Group):
                 if self.style[i] == 1:
                     item = Wall(i, -100)
 
-
     def update(self):
         super().update()
 
@@ -74,7 +73,7 @@ class Wall(pygame.sprite.Sprite):
     WIDTH = 60
     HEIGHT = 20
     BASE_SPEED = 2
-    SPACER = 80
+    SPACER = 100
     RESET_Y = -100
 
     # def __init__(self):
@@ -147,6 +146,7 @@ class Game(object):
     """ This class represents an instance of the game. If we need to
         reset the game we'd just need to create a new instance of this
         class. """
+    SCORE_LIMIT = 20
 
     def __init__(self):
         """ Constructor. Create all our attributes and initialize
@@ -169,10 +169,7 @@ class Game(object):
             # self.wall_list.add(wall)
             # self.all_sprites_list.add(wall)
             wall_group = WallGroup(-Wall.SPACER * i)
-            print(wall_group)
             self.wall_list.append(wall_group)
-            print(self.wall_list)
-
 
         # Create the player
         self.player = Player()
@@ -202,7 +199,7 @@ class Game(object):
         This method is run each time through the frame. It
         updates positions and checks for collisions.
         """
-        if not self.game_over:
+        if not self.game_over and not self.game_won:
             # Move all the sprites
             self.all_sprites_list.update()
             for wall_group in self.wall_list:
@@ -219,11 +216,6 @@ class Game(object):
                     # self.wall_list.add(wall)
                     # self.all_sprites_list.add(wall)
 
-                # for wall in self.wall_list:
-                #     if wall.rect.y > self.player.rect.y + self.player.rect.height:
-                #         if not wall.checked:
-                #             self.score += 1
-                #             wall.checked = True
                 for wall in wall_group.spritedict:
                     if wall.rect.y > self.player.rect.y + self.player.rect.height:
                         if not wall.checked:
@@ -233,7 +225,7 @@ class Game(object):
             if self.lives < 1:
                 self.game_over = True
 
-            if self.score > 10:
+            if self.score > Game.SCORE_LIMIT:
                 self.game_won = True
 
     def display_frame(self, screen):
