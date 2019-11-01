@@ -37,7 +37,7 @@ FEEDBACK_Y = 430
 
 
 # --- Classes ---
-class WallGroup:
+class WallGroup(pygame.sprite.Group):
     WALL_STYLES = [
         [1, 0, 0],
         [0, 1, 0],
@@ -47,12 +47,26 @@ class WallGroup:
         [1, 1, 0]
     ]
 
-    def __init__(self):
+    def __init__(self, y_group_in, *sprites):
+        super().__init__(*sprites)
         sel = random.randint(0, 5)
-        self.style = Wall.WALL_STYLES[sel]
+        self.style = WallGroup.WALL_STYLES[sel]
+        self.collided = False
         for i in range(len(self.style)):
             if self.style[i] == 1:
-                item = Wall(i)
+                item = Wall(i, y_group_in)
+                self.add(item)
+
+    def reset(self):
+        if self.collided:
+            self.collided = False
+            for i in range(len(self.style)):
+                if self.style[i] == 1:
+                    item = Wall(i, -100)
+
+
+    def update(self):
+        super().update()
 
 
 class Wall(pygame.sprite.Sprite):
@@ -61,6 +75,7 @@ class Wall(pygame.sprite.Sprite):
     HEIGHT = 20
     BASE_SPEED = 2
     SPACER = 80
+    RESET_Y = -100
 
     # def __init__(self):
     #     """ Constructor, create the image of the block. """
@@ -70,21 +85,21 @@ class Wall(pygame.sprite.Sprite):
     #     self.rect = self.image.get_rect()
     #     self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
     #     self.checked = False
-    def __init__(self, x_in):
+    def __init__(self, x_in, y_in):
         """ Constructor, create the image of the block. """
         super().__init__()
         self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = Player.x_pos_list[x_in] - Wall.WIDTH / 2
+        self.rect.y = y_in
         self.checked = False
 
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
             the screen. """
-        # self.rect.y = -
-        self.rect.y = random.randrange(-20, -200, -80)
-        self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
+        self.rect.y = Wall.RESET_Y
+        # self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
         self.checked = False
 
     def update(self):
@@ -143,7 +158,8 @@ class Game(object):
         # self.sound = pygame.mixer.Sound()
 
         # Create sprite lists
-        self.wall_list = pygame.sprite.Group()
+        # self.wall_list = pygame.sprite.Group()
+        self.wall_list = []
         self.all_sprites_list = pygame.sprite.Group()
 
         # Create the block sprites
@@ -152,6 +168,11 @@ class Game(object):
             # wall.rect.y = 0 - Wall.SPACER * i
             # self.wall_list.add(wall)
             # self.all_sprites_list.add(wall)
+            wall_group = WallGroup(-Wall.SPACER * i)
+            print(wall_group)
+            self.wall_list.append(wall_group)
+            print(self.wall_list)
+
 
         # Create the player
         self.player = Player()
@@ -184,23 +205,30 @@ class Game(object):
         if not self.game_over:
             # Move all the sprites
             self.all_sprites_list.update()
+            for wall_group in self.wall_list:
+                wall_group.update()
 
-            # See if the player block has collided with anything.
-            wall_hit_list = pygame.sprite.spritecollide(self.player, self.wall_list, True)
+                # See if the player block has collided with anything.
+                wall_hit_list = pygame.sprite.spritecollide(self.player, wall_group, True)
 
-            # Check the list of collisions.
-            for _ in wall_hit_list:
-                # self.score += len(wall_hit_list)
-                self.lives -= 1
-                wall = Wall()
-                self.wall_list.add(wall)
-                self.all_sprites_list.add(wall)
+                # Check the list of collisions.
+                for _ in wall_hit_list:
+                    # self.score += len(wall_hit_list)
+                    self.lives -= 1
+                    # wall = Wall()
+                    # self.wall_list.add(wall)
+                    # self.all_sprites_list.add(wall)
 
-            for wall in self.wall_list:
-                if wall.rect.y > self.player.rect.y + self.player.rect.height:
-                    if not wall.checked:
-                        self.score += 1
-                        wall.checked = True
+                # for wall in self.wall_list:
+                #     if wall.rect.y > self.player.rect.y + self.player.rect.height:
+                #         if not wall.checked:
+                #             self.score += 1
+                #             wall.checked = True
+                for wall in wall_group.spritedict:
+                    if wall.rect.y > self.player.rect.y + self.player.rect.height:
+                        if not wall.checked:
+                            self.score += 1
+                            wall.checked = True
 
             if self.lives < 1:
                 self.game_over = True
@@ -228,6 +256,8 @@ class Game(object):
 
         if not self.game_over and not self.game_won:
             self.all_sprites_list.draw(screen)
+            for wall_group in self.wall_list:
+                wall_group.draw(screen)
             self.display_feedback(screen)
         pygame.display.flip()
 
