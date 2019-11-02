@@ -52,17 +52,11 @@ class WallGroup(pygame.sprite.Group):
         sel = random.randint(0, 5)
         self.style = WallGroup.WALL_STYLES[sel]
         self.collided = False
+        self.score_checked = False
         for i in range(len(self.style)):
             if self.style[i] == 1:
                 item = Wall(i, y_group_in)
                 self.add(item)
-
-    def reset(self):
-        if self.collided:
-            self.collided = False
-            for i in range(len(self.style)):
-                if self.style[i] == 1:
-                    item = Wall(i, -100)
 
     def update(self):
         super().update()
@@ -97,7 +91,7 @@ class Wall(pygame.sprite.Sprite):
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
             the screen. """
-        self.rect.y = Wall.RESET_Y
+        # self.rect.y = Wall.RESET_Y
         # self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
         self.checked = False
 
@@ -210,17 +204,16 @@ class Game(object):
 
                 # Check the list of collisions.
                 for _ in wall_hit_list:
-                    # self.score += len(wall_hit_list)
                     self.lives -= 1
                     # wall = Wall()
                     # self.wall_list.add(wall)
                     # self.all_sprites_list.add(wall)
 
-                for wall in wall_group.spritedict:
-                    if wall.rect.y > self.player.rect.y + self.player.rect.height:
-                        if not wall.checked:
-                            self.score += 1
-                            wall.checked = True
+                if not wall_group.score_checked:
+                    if wall_group.sprites()[0].rect.y > self.player.rect.y + self.player.rect.height:
+                        self.score += 1
+                        wall_group.score_checked = True
+
 
             if self.lives < 1:
                 self.game_over = True
@@ -268,6 +261,20 @@ class Game(object):
         lives_y = score_y + 25
         screen_in.blit(lives_text, [lives_x, lives_y])
 
+    def handle_wall_reset(self, wall_group_first):
+        wall_group_last_y = self.wall_list[-1].sprites()[0].rect.y
+        for wall_sprite in wall_group_first.sprites():
+            print(wall_group_last_y)
+            print(wall_sprite)
+            # TODO: Fiox this
+            if wall_sprite.rect.y > SCREEN_HEIGHT + wall_sprite.rect.y:
+                print("A group has need reset")
+                # Basically remove the 0th element, but add it to the end using the y from the last one
+                self.wall_list.pop(0)
+                new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER)
+                self.wall_list.append(new_wall_group)
+                print(self.wall_list)
+
 
 def main():
     """ Main program function. """
@@ -278,7 +285,6 @@ def main():
     screen = pygame.display.set_mode(size)
 
     pygame.display.set_caption("Getaway")
-    pygame.mouse.set_visible(False)
 
     # Create our objects and set the data
     done = False
