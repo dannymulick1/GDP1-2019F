@@ -66,7 +66,7 @@ class Wall(pygame.sprite.Sprite):
     """ This class represents a wall made to oppose our player. """
     WIDTH = 60
     HEIGHT = 20
-    BASE_SPEED = 2
+    EASY_SPEED = 2
     SPACER = 100
     RESET_Y = -100
 
@@ -97,7 +97,7 @@ class Wall(pygame.sprite.Sprite):
 
     def update(self):
         """ Automatically called when we need to move the block. """
-        self.rect.y += Wall.BASE_SPEED
+        self.rect.y += Wall.EASY_SPEED
 
         if self.rect.y > SCREEN_HEIGHT + self.rect.height:
             self.reset_pos()
@@ -209,11 +209,13 @@ class Game(object):
                     # self.wall_list.add(wall)
                     # self.all_sprites_list.add(wall)
 
-                if not wall_group.score_checked:
-                    if wall_group.sprites()[0].rect.y > self.player.rect.y + self.player.rect.height:
+                if wall_group.sprites()[0].rect.y > self.player.rect.y + self.player.rect.height:
+                    if not wall_group.score_checked:
                         self.score += 1
                         wall_group.score_checked = True
 
+                if wall_group.sprites()[0].rect.y > SCREEN_HEIGHT:
+                    self.handle_wall_reset(wall_group)
 
             if self.lives < 1:
                 self.game_over = True
@@ -263,17 +265,12 @@ class Game(object):
 
     def handle_wall_reset(self, wall_group_first):
         wall_group_last_y = self.wall_list[-1].sprites()[0].rect.y
-        for wall_sprite in wall_group_first.sprites():
-            print(wall_group_last_y)
-            print(wall_sprite)
-            # TODO: Fiox this
-            if wall_sprite.rect.y > SCREEN_HEIGHT + wall_sprite.rect.y:
-                print("A group has need reset")
-                # Basically remove the 0th element, but add it to the end using the y from the last one
-                self.wall_list.pop(0)
-                new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER)
-                self.wall_list.append(new_wall_group)
-                print(self.wall_list)
+        # for wall_sprite in wall_group_first.sprites():
+        wall_sprite = wall_group_first.sprites()[0]
+        # Basically remove the 0th element, but add it to the end using the y from the last one
+        self.wall_list.pop(0)
+        new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER)
+        self.wall_list.append(new_wall_group)
 
 
 def main():
