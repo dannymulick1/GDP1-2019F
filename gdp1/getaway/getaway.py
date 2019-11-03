@@ -152,16 +152,11 @@ class Game(object):
         # self.sound = pygame.mixer.Sound()
 
         # Create sprite lists
-        # self.wall_list = pygame.sprite.Group()
         self.wall_list = []
         self.all_sprites_list = pygame.sprite.Group()
 
         # Create the block sprites
         for i in range(10):
-            # wall = Wall()
-            # wall.rect.y = 0 - Wall.SPACER * i
-            # self.wall_list.add(wall)
-            # self.all_sprites_list.add(wall)
             wall_group = WallGroup(-Wall.SPACER * i)
             self.wall_list.append(wall_group)
 
@@ -277,6 +272,7 @@ def main():
     """ Main program function. """
     # Initialize Pygame and set up the window
     pygame.init()
+    pygame.mixer.init()
 
     size = [SCREEN_WIDTH, SCREEN_HEIGHT]
     screen = pygame.display.set_mode(size)
@@ -289,6 +285,8 @@ def main():
 
     # Create an instance of the Game class
     game = Game()
+    pygame.mixer.music.load("Caffeine & Chaos Forever.mp3")
+    pygame.mixer.music.play(-1, 0.0)
 
     # Main game loop
     while not done:
