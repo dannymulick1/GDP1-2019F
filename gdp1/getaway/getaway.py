@@ -218,6 +218,7 @@ class Game(object):
 
             if self.score > Game.SCORE_LIMIT:
                 self.game_won = True
+                pygame.mixer.music.stop()
 
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
