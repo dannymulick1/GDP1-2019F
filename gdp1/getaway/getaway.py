@@ -2,18 +2,18 @@
 Getaway! The driving, wall avoiding game
 Author: Danny Mulick
 
-b. Version - 0.1.2
+b. Version - 0.2.1
 c. What the code does
+ - Splash screen appears and will click to pass
  - This game runs the first level (Easy) of the game so far. It spawns the player, the obstacles, and moves them down
     the screen.
+ - Get 15 points to win, or lose all lives to lose
 d. A brief description of how to play the game
  - You play the game using either WASD or the arrow keys, moving left or right in order to avoid oncoming walls.
- - Score 10 points in order to win this level, or lose all three lives to lose it.
+ - Score 15 points in order to win this level, or lose all three lives to lose it.
 e. What’s not working and known bugs and limitations at this stage
-  - Bug - sometimes walls spawn in such a manner that reduces the space available for a player to use to avoid them.
-    - Potential fix / todo - implement a way to create a group of walls instead of individual. Can design patterns to use
+  - Bug - checking on the wall group height if no wall exists in the first slot fails
 f. What’s left at this stage, not what you might or might not do, etc. but what you plan to do
-  - Implement main menu
   - Implement other difficulty levels
   - Add sound design for music and sounds for point scoring
   - Add more detail to game over and
@@ -140,7 +140,7 @@ class Game(object):
     """ This class represents an instance of the game. If we need to
         reset the game we'd just need to create a new instance of this
         class. """
-    SCORE_LIMIT = 20
+    SCORE_LIMIT = 15
 
     def __init__(self):
         """ Constructor. Create all our attributes and initialize
@@ -149,7 +149,6 @@ class Game(object):
         self.score = 0
         self.game_over = False
         self.game_won = False
-        # self.sound = pygame.mixer.Sound()
 
         # Create sprite lists
         self.wall_list = []
@@ -164,6 +163,9 @@ class Game(object):
         self.player = Player()
         self.lives = self.player.lives
         self.all_sprites_list.add(self.player)
+
+        pygame.mixer.music.load("Caffeine & Chaos Forever.mp3")
+        pygame.mixer.music.play(-1, 0.0)
 
     def process_events(self):
         """ Process all of the events. Return a "True" if we need
@@ -200,10 +202,8 @@ class Game(object):
                 # Check the list of collisions.
                 for _ in wall_hit_list:
                     self.lives -= 1
-                    # wall = Wall()
-                    # self.wall_list.add(wall)
-                    # self.all_sprites_list.add(wall)
 
+                # This spawns an error, need to work on fixing
                 if wall_group.sprites()[0].rect.y > self.player.rect.y + self.player.rect.height:
                     if not wall_group.score_checked:
                         self.score += 1
@@ -214,6 +214,7 @@ class Game(object):
 
             if self.lives < 1:
                 self.game_over = True
+                pygame.mixer.music.stop()
 
             if self.score > Game.SCORE_LIMIT:
                 self.game_won = True
@@ -285,8 +286,6 @@ def main():
 
     # Create an instance of the Game class
     game = Game()
-    pygame.mixer.music.load("Caffeine & Chaos Forever.mp3")
-    pygame.mixer.music.play(-1, 0.0)
 
     # Main game loop
     while not done:
