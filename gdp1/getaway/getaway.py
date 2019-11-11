@@ -67,7 +67,7 @@ class Wall(pygame.sprite.Sprite):
     WIDTH = 60
     HEIGHT = 20
     EASY_SPEED = 2
-    SPACER = 100
+    SPACER = 120
     RESET_Y = -100
 
     def __init__(self, x_in, y_in):
@@ -102,7 +102,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load("images/car_red.png").convert(), (25, 50))
+        self.image = pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50))
         self.rect = self.image.get_rect()
         self.rect.y = SCREEN_HEIGHT - (2 * self.rect.height)
         self.lives = 3
