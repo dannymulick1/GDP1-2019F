@@ -110,8 +110,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface([20, 40])
-        self.image.fill(RED)
+        self.image = pygame.transform.scale(pygame.image.load("images/car_red.png").convert(), (25, 50))
         self.rect = self.image.get_rect()
         self.rect.y = SCREEN_HEIGHT - (2 * self.rect.height)
         self.lives = 3
@@ -164,7 +163,7 @@ class Game(object):
         self.lives = self.player.lives
         self.all_sprites_list.add(self.player)
 
-        pygame.mixer.music.load("Caffeine & Chaos Forever.mp3")
+        pygame.mixer.music.load("audio/Caffeine & Chaos Forever.mp3")
         pygame.mixer.music.play(-1, 0.0)
 
     def process_events(self):
@@ -196,21 +195,24 @@ class Game(object):
             for wall_group in self.wall_list:
                 wall_group.update()
 
+                for wall in wall_group.sprites():
+                    if wall is not None:
+                        # This spawns an error, need to work on fixing
+                        if wall.rect.y > self.player.rect.y + self.player.rect.height:
+                            if not wall_group.score_checked:
+                                self.score += 1
+                                wall_group.score_checked = True
+
+                    if wall.rect.y > SCREEN_HEIGHT:
+                        self.handle_wall_reset(wall_group)
+                    break
+
                 # See if the player block has collided with anything.
                 wall_hit_list = pygame.sprite.spritecollide(self.player, wall_group, True)
 
                 # Check the list of collisions.
                 for _ in wall_hit_list:
                     self.lives -= 1
-
-                # This spawns an error, need to work on fixing
-                if wall_group.sprites()[0].rect.y > self.player.rect.y + self.player.rect.height:
-                    if not wall_group.score_checked:
-                        self.score += 1
-                        wall_group.score_checked = True
-
-                if wall_group.sprites()[0].rect.y > SCREEN_HEIGHT:
-                    self.handle_wall_reset(wall_group)
 
             if self.lives < 1:
                 self.game_over = True
