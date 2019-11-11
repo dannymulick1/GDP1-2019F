@@ -184,6 +184,18 @@ class Game(object):
 
         return False
 
+    def handle_splash(self):
+        """ Process all of the events. Return a "True" if we need
+            to close the window. """
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                return False
+
+        return True
+
     def run_logic(self):
         """
         This method is run each time through the frame. It
@@ -221,6 +233,18 @@ class Game(object):
             if self.score > Game.SCORE_LIMIT:
                 self.game_won = True
                 pygame.mixer.music.stop()
+
+    def display_splash(self, screen):
+        """ Display everything to the screen for the game. """
+        screen.fill(BLACK)
+
+        title_font = pygame.font.SysFont("serif", 25)
+        text = title_font.render("Getaway!", True, WHITE)
+        center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
+        center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
+        screen.blit(text, [center_x, center_y])
+
+        pygame.display.flip()
 
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
@@ -285,10 +309,16 @@ def main():
 
     # Create our objects and set the data
     done = False
+    splash = True
     clock = pygame.time.Clock()
 
     # Create an instance of the Game class
     game = Game()
+
+    # Make and display splash screen
+    while splash:
+        splash = game.handle_splash()
+        game.display_splash(screen)
 
     # Main game loop
     while not done:
