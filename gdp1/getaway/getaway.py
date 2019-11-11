@@ -12,7 +12,7 @@ d. A brief description of how to play the game
  - You play the game using either WASD or the arrow keys, moving left or right in order to avoid oncoming walls.
  - Score 15 points in order to win this level, or lose all three lives to lose it.
 e. What’s not working and known bugs and limitations at this stage
-  - Bug - checking on the wall group height if no wall exists in the first slot fails
+
 f. What’s left at this stage, not what you might or might not do, etc. but what you plan to do
   - Implement other difficulty levels
   - Add sound design for music and sounds for point scoring
