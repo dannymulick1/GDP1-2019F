@@ -70,14 +70,6 @@ class Wall(pygame.sprite.Sprite):
     SPACER = 100
     RESET_Y = -100
 
-    # def __init__(self):
-    #     """ Constructor, create the image of the block. """
-    #     super().__init__()
-    #     self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
-    #     self.image.fill(BLACK)
-    #     self.rect = self.image.get_rect()
-    #     self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
-    #     self.checked = False
     def __init__(self, x_in, y_in):
         """ Constructor, create the image of the block. """
         super().__init__()
@@ -118,7 +110,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         """ Update the player location. """
-        self.rect.x = Player.x_pos_list[self.x_pos]
+        self.rect.x = Player.x_pos_list[self.x_pos] - self.image.get_rect().size[0]/2
 
     def move_left(self):
         if self.x_pos > 0:
@@ -140,6 +132,8 @@ class Game(object):
         reset the game we'd just need to create a new instance of this
         class. """
     SCORE_LIMIT = 15
+    INSTRUCTIONS = """You are an agent on the run, and today is your escape.
+    Drive away to """
 
     def __init__(self):
         """ Constructor. Create all our attributes and initialize
@@ -164,11 +158,13 @@ class Game(object):
         self.all_sprites_list.add(self.player)
 
         pygame.mixer.music.load("audio/Caffeine & Chaos Forever.mp3")
-        pygame.mixer.music.play(-1, 0.0)
 
     def process_events(self):
         """ Process all of the events. Return a "True" if we need
             to close the window. """
+
+        if not pygame.mixer.music.get_busy() and not self.game_over and not self.game_won:
+            pygame.mixer.music.play(-1, 0.0)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -228,11 +224,11 @@ class Game(object):
 
             if self.lives < 1:
                 self.game_over = True
-                pygame.mixer.music.stop()
+                pygame.mixer.music.fadeout(200)
 
             if self.score > Game.SCORE_LIMIT:
                 self.game_won = True
-                pygame.mixer.music.stop()
+                pygame.mixer.music.fadeout(200)
 
     def display_splash(self, screen):
         """ Display everything to the screen for the game. """
@@ -265,6 +261,8 @@ class Game(object):
             screen.blit(text, [center_x, center_y])
 
         if not self.game_over and not self.game_won:
+            # Create background
+            self.create_background(screen)
             self.all_sprites_list.draw(screen)
             for wall_group in self.wall_list:
                 wall_group.draw(screen)
@@ -294,6 +292,13 @@ class Game(object):
         self.wall_list.pop(0)
         new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER)
         self.wall_list.append(new_wall_group)
+
+    def create_background(self, screen_in):
+        # self.all_sprites_list.add()
+        road_line1_x = (Player.x_pos_list[0] + Player.x_pos_list[1]) / 2 - 2
+        pygame.draw.rect(screen_in, BLACK, [road_line1_x, 0, 5, SCREEN_HEIGHT], 0)
+        road_line2_x = (Player.x_pos_list[1] + Player.x_pos_list[2]) / 2 - 2
+        pygame.draw.rect(screen_in, BLACK, [road_line2_x, 0, 5, SCREEN_HEIGHT], 0)
 
 
 def main():
