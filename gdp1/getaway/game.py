@@ -59,6 +59,8 @@ class Game(object):
             if event.type == pygame.QUIT:
                 return True
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return True
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     self.player.move_left()
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
