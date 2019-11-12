@@ -23,23 +23,12 @@ import pygame
 import random
 
 # --- Global constants ---
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
-YELLOW = (238, 210, 2)
-
-SCREEN_WIDTH = 700
-SCREEN_HEIGHT = 500
-
-FEEDBACK_X = 0
-FEEDBACK_Y = 430
+from constants import *
 
 
 # --- Classes ---
 class WallGroup(pygame.sprite.Group):
-    WALL_STYLES = [
+    WALL_STYLES_EASY = [
         [1, 0, 0],
         [0, 1, 0],
         [0, 0, 1],
@@ -51,7 +40,7 @@ class WallGroup(pygame.sprite.Group):
     def __init__(self, y_group_in, *sprites):
         super().__init__(*sprites)
         sel = random.randint(0, 5)
-        self.style = WallGroup.WALL_STYLES[sel]
+        self.style = WallGroup.WALL_STYLES_EASY[sel]
         self.collided = False
         self.score_checked = False
         for i in range(len(self.style)):
@@ -68,7 +57,7 @@ class Wall(pygame.sprite.Sprite):
     WIDTH = 60
     HEIGHT = 20
     EASY_SPEED = 2
-    SPACER = 120
+    EASY_SPACER = 130
     RESET_Y = -100
 
     def __init__(self, x_in, y_in):
@@ -132,7 +121,7 @@ class Game(object):
     """ This class represents an instance of the game. If we need to
         reset the game we'd just need to create a new instance of this
         class. """
-    SCORE_LIMIT = 15
+    SCORE_LIMIT_EASY = 15
     INSTRUCTIONS = """You are an agent on the run, and today is your escape.
     Drive away to """
 
@@ -150,7 +139,7 @@ class Game(object):
 
         # Create the block sprites
         for i in range(10):
-            wall_group = WallGroup(-Wall.SPACER * i)
+            wall_group = WallGroup(-Wall.EASY_SPACER * i)
             self.wall_list.append(wall_group)
 
         # Create the player
@@ -227,7 +216,7 @@ class Game(object):
                 self.game_over = True
                 pygame.mixer.music.fadeout(200)
 
-            if self.score > Game.SCORE_LIMIT:
+            if self.score > Game.SCORE_LIMIT_EASY:
                 self.game_won = True
                 pygame.mixer.music.fadeout(200)
 
@@ -291,7 +280,7 @@ class Game(object):
         wall_sprite = wall_group_first.sprites()[0]
         # Basically remove the 0th element, but add it to the end using the y from the last one
         self.wall_list.pop(0)
-        new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER)
+        new_wall_group = WallGroup(wall_group_last_y - Wall.EASY_SPACER)
         self.wall_list.append(new_wall_group)
 
     def create_background(self, screen_in):
