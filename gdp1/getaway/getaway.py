@@ -124,7 +124,14 @@ class Game(object):
     SCORE_LIMIT_EASY = 15
     INSTRUCTIONS = ["You are an agent on the run, and today is your escape.",
                     "Drive away to safety while avoiding the barriers set up to stop you.",
-                    "Use your arrow keys or A and D to avoid the walls."]
+                    "Use your arrow keys or A and D to avoid the walls.",
+                    "Press space to continue..."]
+    WIN_TEXT = ["You have escaped your pursuers and lived another day",
+                "Tune in next time to continue your..."
+                "Getaway!"]
+    LOSE_TEXT = ["You have been captured!",
+                 "Try again another day to make your...",
+                 "Getaway!"]
 
     def __init__(self):
         """ Constructor. Create all our attributes and initialize
@@ -162,14 +169,14 @@ class Game(object):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return True
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.game_over or self.game_won:
-                    self.__init__()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     self.player.move_left()
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     self.player.move_right()
+                if event.key == pygame.K_SPACE:
+                    if self.game_over or self.game_won:
+                        self.__init__()
 
         return False
 
@@ -181,9 +188,9 @@ class Game(object):
             if event.type == pygame.QUIT:
                 self.done = True
                 return False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                return False
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    return False
         return True
 
     def run_logic(self):
@@ -225,39 +232,55 @@ class Game(object):
                 pygame.mixer.music.fadeout(200)
 
     def display_splash(self, screen):
-        """ Display everything to the screen for the game. """
+        """ Display everything to the screen for splash of the game
+            Title
+            My name
+            Background for the game
+            Means to transition
+        """
         screen.fill(BLACK)
 
-        title_font = pygame.font.SysFont("serif", 50)
-        instruction_font = pygame.font.SysFont("serif", 20)
+        title_font = pygame.font.SysFont("helvetica", 50)
+        font = pygame.font.SysFont("helvetica", 20)
 
         title_text = title_font.render("Getaway!", True, WHITE)
         center_x = (SCREEN_WIDTH // 2) - (title_text.get_width() // 2)
         center_y = (SCREEN_HEIGHT // 2) - (title_text.get_height() // 2)
-        screen.blit(title_text, [center_x, center_y])
+        screen.blit(title_text, [center_x - 40, center_y - 50])
+
+        name_text = font.render("Danny Mulick", True, WHITE)
+        screen.blit(name_text, [center_x, center_y])
         for i in range(len(Game.INSTRUCTIONS)):
-            instruction_text = instruction_font.render(Game.INSTRUCTIONS[i], True, WHITE)
+            instruction_text = font.render(Game.INSTRUCTIONS[i], True, WHITE)
             screen.blit(instruction_text, [60, center_y + 50 + (20*i)])
+
+        # Draw a red car, chased by some yellow cars, heading towards some walls
 
         pygame.display.flip()
 
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
-        screen.fill(WHITE)
+        screen.fill(SAND)
 
         if self.game_over:
-            font = pygame.font.SysFont("serif", 25)
-            text = font.render("Game Over, click to restart", True, BLACK)
+            font = pygame.font.SysFont("helvetica", 25)
+            text = font.render("Game Over, press space to restart", True, BLACK)
             center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
             center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
             screen.blit(text, [center_x, center_y])
+            for i in range(len(Game.LOSE_TEXT)):
+                game_over_text = font.render(Game.LOSE_TEXT[i], True, BLACK)
+                screen.blit(game_over_text, [60, center_y + 50 + (20 * i)])
 
         if self.game_won:
-            font = pygame.font.SysFont("serif", 25)
-            text = font.render("You won! Click to restart", True, BLACK)
+            font = pygame.font.SysFont("helvetica", 25)
+            text = font.render("You won! Press space to restart", True, BLACK)
             center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
             center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
             screen.blit(text, [center_x, center_y])
+            for i in range(len(Game.WIN_TEXT)):
+                game_won_text = font.render(Game.WIN_TEXT[i], True, BLACK)
+                screen.blit(game_won_text, [60, center_y + 50 + (20 * i)])
 
         if not self.game_over and not self.game_won:
             # Create background
@@ -270,9 +293,9 @@ class Game(object):
 
     def display_feedback(self, screen_in):
         """ Display feedback about the current game session, score and remaining lives"""
-        pygame.draw.rect(screen_in, BLUE, [FEEDBACK_X, FEEDBACK_Y, 100, 70], 0)
+        pygame.draw.rect(screen_in, BLUE, [FEEDBACK_X, FEEDBACK_Y, 120, 80], 0)
         score_str = "Score: " + str(self.score)
-        font = pygame.font.SysFont("serif", 25)
+        font = pygame.font.SysFont("helvetica", 25)
         score_text = font.render(score_str, True, WHITE)
         score_x = FEEDBACK_X + 5
         score_y = FEEDBACK_Y + 5
