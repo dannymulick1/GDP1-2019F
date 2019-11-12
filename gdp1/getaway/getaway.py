@@ -28,6 +28,7 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
+YELLOW = (238, 210, 2)
 
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 500
@@ -74,7 +75,7 @@ class Wall(pygame.sprite.Sprite):
         """ Constructor, create the image of the block. """
         super().__init__()
         self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
-        self.image.fill(BLACK)
+        self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.rect.x = Player.x_pos_list[x_in] - Wall.WIDTH / 2
         self.rect.y = y_in
@@ -295,10 +296,13 @@ class Game(object):
 
     def create_background(self, screen_in):
         # self.all_sprites_list.add()
+        pygame.draw.rect(screen_in, BLACK, [Player.x_pos_list[0] - Wall.WIDTH, 0,
+                                            Player.x_pos_list[-1] - Player.x_pos_list[0] + Wall.WIDTH * 2,
+                                            SCREEN_HEIGHT], 0)
         road_line1_x = (Player.x_pos_list[0] + Player.x_pos_list[1]) / 2 - 2
-        pygame.draw.rect(screen_in, BLACK, [road_line1_x, 0, 5, SCREEN_HEIGHT], 0)
+        pygame.draw.rect(screen_in, WHITE, [road_line1_x, 0, 5, SCREEN_HEIGHT], 0)
         road_line2_x = (Player.x_pos_list[1] + Player.x_pos_list[2]) / 2 - 2
-        pygame.draw.rect(screen_in, BLACK, [road_line2_x, 0, 5, SCREEN_HEIGHT], 0)
+        pygame.draw.rect(screen_in, WHITE, [road_line2_x, 0, 5, SCREEN_HEIGHT], 0)
 
 
 def main():
