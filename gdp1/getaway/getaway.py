@@ -255,7 +255,9 @@ class Game(object):
             screen.blit(instruction_text, [60, center_y + 50 + (20*i)])
 
         # Draw a red car, chased by some yellow cars, heading towards some walls
+        screen.blit(pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50)), [500, 80])
 
+        screen.blit(pygame.transform.scale(pygame.image.load("images/car_yellow.png"), (25, 50)), [500, 300])
         pygame.display.flip()
 
     def display_frame(self, screen):
