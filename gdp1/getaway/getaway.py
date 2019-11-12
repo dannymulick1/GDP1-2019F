@@ -100,7 +100,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         """ Update the player location. """
-        self.rect.x = Player.x_pos_list[self.x_pos] - self.image.get_rect().size[0]/2
+        self.rect.x = Player.x_pos_list[self.x_pos] - self.image.get_rect().size[0] / 2
 
     def move_left(self):
         if self.x_pos > 0:
@@ -122,8 +122,9 @@ class Game(object):
         reset the game we'd just need to create a new instance of this
         class. """
     SCORE_LIMIT_EASY = 15
-    INSTRUCTIONS = """You are an agent on the run, and today is your escape.
-    Drive away to """
+    INSTRUCTIONS = ["You are an agent on the run, and today is your escape.",
+                    "Drive away to safety while avoiding the barriers set up to stop you.",
+                    "Use your arrow keys or A and D to avoid the walls."]
 
     def __init__(self):
         """ Constructor. Create all our attributes and initialize
@@ -132,6 +133,8 @@ class Game(object):
         self.score = 0
         self.game_over = False
         self.game_won = False
+        self.done = False
+        self.splash = True
 
         # Create sprite lists
         self.wall_list = []
@@ -176,6 +179,7 @@ class Game(object):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.done = True
                 return False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 return False
@@ -224,11 +228,16 @@ class Game(object):
         """ Display everything to the screen for the game. """
         screen.fill(BLACK)
 
-        title_font = pygame.font.SysFont("serif", 25)
-        text = title_font.render("Getaway!", True, WHITE)
-        center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
-        center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
-        screen.blit(text, [center_x, center_y])
+        title_font = pygame.font.SysFont("serif", 50)
+        instruction_font = pygame.font.SysFont("serif", 20)
+
+        title_text = title_font.render("Getaway!", True, WHITE)
+        center_x = (SCREEN_WIDTH // 2) - (title_text.get_width() // 2)
+        center_y = (SCREEN_HEIGHT // 2) - (title_text.get_height() // 2)
+        screen.blit(title_text, [center_x, center_y])
+        for i in range(len(Game.INSTRUCTIONS)):
+            instruction_text = instruction_font.render(Game.INSTRUCTIONS[i], True, WHITE)
+            screen.blit(instruction_text, [60, center_y + 50 + (20*i)])
 
         pygame.display.flip()
 
@@ -306,22 +315,20 @@ def main():
     pygame.display.set_caption("Getaway")
 
     # Create our objects and set the data
-    done = False
-    splash = True
     clock = pygame.time.Clock()
 
     # Create an instance of the Game class
     game = Game()
 
     # Make and display splash screen
-    while splash:
-        splash = game.handle_splash()
+    while game.splash:
+        game.splash = game.handle_splash()
         game.display_splash(screen)
 
     # Main game loop
-    while not done:
+    while not game.done:
         # Process events (keystrokes, mouse clicks, etc)
-        done = game.process_events()
+        game.done = game.process_events()
 
         # Update object positions, check for collisions
         game.run_logic()
