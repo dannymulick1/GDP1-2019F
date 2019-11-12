@@ -57,7 +57,7 @@ class Wall(pygame.sprite.Sprite):
     WIDTH = 60
     HEIGHT = 20
     EASY_SPEED = 2
-    EASY_SPACER = 130
+    EASY_SPACER = 140
     RESET_Y = -100
 
     def __init__(self, x_in, y_in):
@@ -255,9 +255,17 @@ class Game(object):
             screen.blit(instruction_text, [60, center_y + 50 + (20*i)])
 
         # Draw a red car, chased by some yellow cars, heading towards some walls
-        screen.blit(pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50)), [500, 80])
+        # screen.blit(pygame.Surface([Wall.WIDTH, Wall.HEIGHT]), [500, 70])
+        pygame.draw.rect(screen, YELLOW, [500, 50, Wall.WIDTH, Wall.HEIGHT], 0)
+        pygame.draw.rect(screen, YELLOW, [420, 50, Wall.WIDTH, Wall.HEIGHT], 0)
+        pygame.draw.rect(screen, YELLOW, [580, 50, Wall.WIDTH, Wall.HEIGHT], 0)
 
-        screen.blit(pygame.transform.scale(pygame.image.load("images/car_yellow.png"), (25, 50)), [500, 300])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50)), [500, 160])
+
+        screen.blit(pygame.transform.scale(pygame.image.load("images/car_yellow.png"), (25, 50)), [500, 350])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/car_blue.png"), (25, 50)), [540, 380])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/car_yellow.png"), (25, 50)), [470, 400])
+
         pygame.display.flip()
 
     def display_frame(self, screen):
