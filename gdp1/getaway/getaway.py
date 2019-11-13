@@ -44,7 +44,7 @@ def main():
     clock = pygame.time.Clock()
 
     # Create an instance of the Game class
-    game = Game()
+    game = Game(0)
 
     # Make and display splash screen
     while game.splash:

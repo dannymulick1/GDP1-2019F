@@ -10,7 +10,7 @@ class Game(object):
     """ This class represents an instance of the game. If we need to
         reset the game we'd just need to create a new instance of this
         class. """
-    SCORE_LIMIT_EASY = 15
+    SCORE_LIMITS = [15, 20, 25]
     INSTRUCTIONS = ["You are an agent on the run, and today is your escape.",
                     "Drive away to safety while avoiding the barriers set up to stop you.",
                     "Use your arrow keys or A and D to avoid the walls.",
@@ -22,11 +22,13 @@ class Game(object):
                  "Try again another day to make your...",
                  "Getaway!"]
 
-    def __init__(self):
+    def __init__(self, level_in):
         """ Constructor. Create all our attributes and initialize
         the game. """
 
         self.score = 0
+        self.level = level_in
+        self.x_pos_list = Player.x_pos_list[level_in]
         self.game_over = False
         self.game_won = False
         self.done = False
@@ -38,7 +40,7 @@ class Game(object):
 
         # Create the block sprites
         for i in range(10):
-            wall_group = WallGroup(-Wall.EASY_SPACER * i)
+            wall_group = WallGroup(-Wall.EASY_SPACER * i, level_in=self.level)
             self.wall_list.append(wall_group)
 
         # Create the player
@@ -46,13 +48,12 @@ class Game(object):
         self.lives = self.player.lives
         self.all_sprites_list.add(self.player)
 
-        pygame.mixer.music.load("audio/Caffeine & Chaos Forever.mp3")
-
     def process_events(self):
         """ Process all of the events. Return a "True" if we need
             to close the window. """
 
         if not pygame.mixer.music.get_busy() and not self.game_over and not self.game_won:
+            pygame.mixer.music.load("audio/Caffeine & Chaos Forever.mp3")
             pygame.mixer.music.play(-1, 0.0)
 
         for event in pygame.event.get():
@@ -67,7 +68,7 @@ class Game(object):
                     self.player.move_right()
                 if event.key == pygame.K_SPACE:
                     if self.game_over or self.game_won:
-                        self.__init__()
+                        self.__init__(self.level)
 
         return False
 
@@ -118,9 +119,13 @@ class Game(object):
                 self.game_over = True
                 pygame.mixer.music.fadeout(200)
 
-            if self.score > Game.SCORE_LIMIT_EASY:
-                self.game_won = True
-                pygame.mixer.music.fadeout(200)
+            if self.score >= Game.SCORE_LIMITS[self.level]:
+                self.level += 1
+                print(self.level)
+                self.__init__(self.level)
+                if self.level >= len(Game.SCORE_LIMITS):
+                    self.game_won = True
+                    pygame.mixer.music.fadeout(200)
 
     def display_splash(self, screen):
         """ Display everything to the screen for splash of the game
@@ -194,7 +199,7 @@ class Game(object):
 
     def display_feedback(self, screen_in):
         """ Display feedback about the current game session, score and remaining lives"""
-        pygame.draw.rect(screen_in, BLUE, [FEEDBACK_X, FEEDBACK_Y, 120, 80], 0)
+        pygame.draw.rect(screen_in, BLUE, [FEEDBACK_X, FEEDBACK_Y, 140, 100], 0)
         score_str = "Score: " + str(self.score)
         font = pygame.font.SysFont("helvetica", 25)
         score_text = font.render(score_str, True, WHITE)
@@ -206,6 +211,11 @@ class Game(object):
         lives_x = score_x
         lives_y = score_y + 25
         screen_in.blit(lives_text, [lives_x, lives_y])
+        level_str = "Highway " + str(self.level + 1)
+        level_x = lives_x
+        level_y = lives_y + 25
+        level_text = font.render(level_str, True, WHITE)
+        screen_in.blit(level_text, [level_x, level_y])
 
     def handle_wall_reset(self, wall_group_first):
         wall_group_last_y = self.wall_list[-1].sprites()[0].rect.y
@@ -218,10 +228,10 @@ class Game(object):
 
     def create_background(self, screen_in):
         # self.all_sprites_list.add()
-        pygame.draw.rect(screen_in, BLACK, [Player.x_pos_list[0] - Wall.WIDTH, 0,
-                                            Player.x_pos_list[-1] - Player.x_pos_list[0] + Wall.WIDTH * 2,
+        pygame.draw.rect(screen_in, BLACK, [self.x_pos_list[0] - Wall.WIDTH, 0,
+                                            self.x_pos_list[-1] - self.x_pos_list[0] + Wall.WIDTH * 2,
                                             SCREEN_HEIGHT], 0)
-        road_line1_x = (Player.x_pos_list[0] + Player.x_pos_list[1]) / 2 - 2
+        road_line1_x = (self.x_pos_list[0] + self.x_pos_list[1]) / 2 - 2
         pygame.draw.rect(screen_in, WHITE, [road_line1_x, 0, 5, SCREEN_HEIGHT], 0)
-        road_line2_x = (Player.x_pos_list[1] + Player.x_pos_list[2]) / 2 - 2
+        road_line2_x = (self.x_pos_list[1] + self.x_pos_list[2]) / 2 - 2
         pygame.draw.rect(screen_in, WHITE, [road_line2_x, 0, 5, SCREEN_HEIGHT], 0)

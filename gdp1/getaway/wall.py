@@ -12,13 +12,16 @@ class Wall(pygame.sprite.Sprite):
     EASY_SPACER = 140
     RESET_Y = -100
 
-    def __init__(self, x_in, y_in):
+    def __init__(self, x_in, y_in, level_in=0):
         """ Constructor, create the image of the block. """
         super().__init__()
         self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
         self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
-        self.rect.x = Player.x_pos_list[x_in] - Wall.WIDTH / 2
+        print(Player.x_pos_list[level_in])
+        self.x_pos = Player.x_pos_list[level_in]
+        print(self.x_pos)
+        self.rect.x = self.x_pos[x_in] - Wall.WIDTH / 2
         self.rect.y = y_in
         self.checked = False
 
