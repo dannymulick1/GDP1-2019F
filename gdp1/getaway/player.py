@@ -26,8 +26,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.y = SCREEN_HEIGHT - (2 * self.rect.height)
         self.lives = 3
-        self.x_pos = 1
         self.x_pos_list = Player.x_pos_list[level_in]
+        self.x_pos = len(self.x_pos_list) // 2
 
     def update(self):
         """ Update the player location. """
@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
             # Suggestion: Implement minor shake or play a sound to denote you can't go left
 
     def move_right(self):
-        if self.x_pos < 2:
+        if self.x_pos < len(self.x_pos_list):
             self.x_pos += 1
         else:
             pass

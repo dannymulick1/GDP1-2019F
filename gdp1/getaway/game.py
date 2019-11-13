@@ -44,7 +44,7 @@ class Game(object):
             self.wall_list.append(wall_group)
 
         # Create the player
-        self.player = Player()
+        self.player = Player(level_in=self.level)
         self.lives = self.player.lives
         self.all_sprites_list.add(self.player)
 
@@ -121,11 +121,12 @@ class Game(object):
 
             if self.score >= Game.SCORE_LIMITS[self.level]:
                 self.level += 1
-                print(self.level)
-                self.__init__(self.level)
                 if self.level >= len(Game.SCORE_LIMITS):
                     self.game_won = True
+                    self.level = 0
                     pygame.mixer.music.fadeout(200)
+                else:
+                    self.__init__(self.level)
 
     def display_splash(self, screen):
         """ Display everything to the screen for splash of the game
@@ -231,7 +232,6 @@ class Game(object):
         pygame.draw.rect(screen_in, BLACK, [self.x_pos_list[0] - Wall.WIDTH, 0,
                                             self.x_pos_list[-1] - self.x_pos_list[0] + Wall.WIDTH * 2,
                                             SCREEN_HEIGHT], 0)
-        road_line1_x = (self.x_pos_list[0] + self.x_pos_list[1]) / 2 - 2
-        pygame.draw.rect(screen_in, WHITE, [road_line1_x, 0, 5, SCREEN_HEIGHT], 0)
-        road_line2_x = (self.x_pos_list[1] + self.x_pos_list[2]) / 2 - 2
-        pygame.draw.rect(screen_in, WHITE, [road_line2_x, 0, 5, SCREEN_HEIGHT], 0)
+        for i in range(len(self.x_pos_list)-1):
+            road_line_x = (self.x_pos_list[i] + self.x_pos_list[i+1]) / 2 - 2
+            pygame.draw.rect(screen_in, WHITE, [road_line_x, 0, 5, SCREEN_HEIGHT], 0)
