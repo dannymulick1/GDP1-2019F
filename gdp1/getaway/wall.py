@@ -18,9 +18,7 @@ class Wall(pygame.sprite.Sprite):
         self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
         self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
-        print(Player.x_pos_list[level_in])
         self.x_pos = Player.x_pos_list[level_in]
-        print(self.x_pos)
         self.rect.x = self.x_pos[x_in] - Wall.WIDTH / 2
         self.rect.y = y_in
         self.checked = False
