@@ -224,7 +224,7 @@ class Game(object):
         wall_sprite = wall_group_first.sprites()[0]
         # Basically remove the 0th element, but add it to the end using the y from the last one
         self.wall_list.pop(0)
-        new_wall_group = WallGroup(wall_group_last_y - Wall.EASY_SPACER)
+        new_wall_group = WallGroup(wall_group_last_y - Wall.EASY_SPACER, level_in=self.level)
         self.wall_list.append(new_wall_group)
 
     def create_background(self, screen_in):

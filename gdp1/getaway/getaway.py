@@ -1,6 +1,10 @@
 """
 Getaway! The driving, wall avoiding game
 Author: Danny Mulick
+Sources:
+    - Images: Obtained from online services and will fill this in later
+    - Audio:
+      Caffeine and Chaos Forever: Kaminakat https://www.newgrounds.com/audio/listen/859250
 
 b. Version - 0.2.1
 c. What the code does

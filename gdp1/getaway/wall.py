@@ -8,7 +8,7 @@ class Wall(pygame.sprite.Sprite):
     """ This class represents a wall made to oppose our player. """
     WIDTH = 60
     HEIGHT = 20
-    EASY_SPEED = 2
+    SPEED = [2, 3, 4]
     EASY_SPACER = 140
     RESET_Y = -100
 
@@ -22,6 +22,7 @@ class Wall(pygame.sprite.Sprite):
         self.rect.x = self.x_pos[x_in] - Wall.WIDTH / 2
         self.rect.y = y_in
         self.checked = False
+        self.speed = Wall.SPEED[level_in]
 
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
@@ -32,7 +33,7 @@ class Wall(pygame.sprite.Sprite):
 
     def update(self):
         """ Automatically called when we need to move the block. """
-        self.rect.y += Wall.EASY_SPEED
+        self.rect.y += self.speed
 
         if self.rect.y > SCREEN_HEIGHT + self.rect.height:
             self.reset_pos()
