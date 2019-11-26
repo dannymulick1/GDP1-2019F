@@ -167,14 +167,14 @@ class Game(object):
 
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
-        screen.blit(pygame.transform.scale(pygame.image.load("images/background/BG.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)),
-                    [0, 0])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/background/Background 1.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)),
-                    [0, 0])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/background/middle.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)),
-                    [0, 0])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/background/foreground.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)),
-                    [0, 0])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/background/BG.png"),
+                                           (SCREEN_WIDTH, SCREEN_HEIGHT)), [0, 0])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/background/Background 1.png"),
+                                           (SCREEN_WIDTH, SCREEN_HEIGHT)), [0, 0])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/background/middle.png"),
+                                           (SCREEN_WIDTH, SCREEN_HEIGHT)), [0, 0])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/background/foreground.png"),
+                                           (SCREEN_WIDTH, SCREEN_HEIGHT)), [0, 0])
 
         if self.game_over:
             font = pygame.font.SysFont("helvetica", 25)
