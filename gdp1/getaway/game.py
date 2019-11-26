@@ -167,7 +167,14 @@ class Game(object):
 
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
-        screen.fill(SAND)
+        screen.blit(pygame.transform.scale(pygame.image.load("images/background/BG.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)),
+                    [0, 0])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/background/Background 1.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)),
+                    [0, 0])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/background/middle.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)),
+                    [0, 0])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/background/foreground.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)),
+                    [0, 0])
 
         if self.game_over:
             font = pygame.font.SysFont("helvetica", 25)
@@ -200,7 +207,8 @@ class Game(object):
 
     def display_feedback(self, screen_in):
         """ Display feedback about the current game session, score and remaining lives"""
-        pygame.draw.rect(screen_in, BLUE, [FEEDBACK_X, FEEDBACK_Y, 140, 100], 0)
+        # pygame.draw.rect(screen_in, BLUE, [FEEDBACK_X, FEEDBACK_Y, 140, 100], 0)
+        screen_in.blit(pygame.image.load("images/road_sign.png"), [FEEDBACK_X, FEEDBACK_Y])
         score_str = "Score: " + str(self.score)
         font = pygame.font.SysFont("helvetica", 25)
         score_text = font.render(score_str, True, WHITE)
