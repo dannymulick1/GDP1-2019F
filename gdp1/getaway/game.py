@@ -21,6 +21,9 @@ class Game(object):
     LOSE_TEXT = ["You have been captured!",
                  "Try again another day to make your...",
                  "Getaway!"]
+    BACKGROUND = pygame.transform.scale(pygame.image.load("images/background/completeBackground.png"),
+                               (SCREEN_WIDTH, SCREEN_HEIGHT))
+
 
     def __init__(self, level_in):
         """ Constructor. Create all our attributes and initialize
@@ -167,14 +170,7 @@ class Game(object):
 
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
-        screen.blit(pygame.transform.scale(pygame.image.load("images/background/BG.png"),
-                                           (SCREEN_WIDTH, SCREEN_HEIGHT)), [0, 0])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/background/Background 1.png"),
-                                           (SCREEN_WIDTH, SCREEN_HEIGHT)), [0, 0])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/background/middle.png"),
-                                           (SCREEN_WIDTH, SCREEN_HEIGHT)), [0, 0])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/background/foreground.png"),
-                                           (SCREEN_WIDTH, SCREEN_HEIGHT)), [0, 0])
+
 
         if self.game_over:
             font = pygame.font.SysFont("helvetica", 25)
@@ -237,6 +233,7 @@ class Game(object):
 
     def create_background(self, screen_in):
         # self.all_sprites_list.add()
+        screen_in.blit(Game.BACKGROUND, [0, 0])
         pygame.draw.rect(screen_in, BLACK, [self.x_pos_list[0] - Wall.WIDTH, 0,
                                             self.x_pos_list[-1] - self.x_pos_list[0] + Wall.WIDTH * 2,
                                             SCREEN_HEIGHT], 0)
