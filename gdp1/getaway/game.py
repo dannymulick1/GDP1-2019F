@@ -2,6 +2,7 @@ import pygame
 
 from constants import SCREEN_HEIGHT, BLACK, WHITE, SCREEN_WIDTH, YELLOW, SAND, BLUE, FEEDBACK_X, FEEDBACK_Y
 from player import Player
+from road_tick import RoadTick
 from wall import Wall
 from wall_group import WallGroup
 
@@ -22,8 +23,7 @@ class Game(object):
                  "Try again another day to make your...",
                  "Getaway!"]
     BACKGROUND = pygame.transform.scale(pygame.image.load("images/background/completeBackground.png"),
-                               (SCREEN_WIDTH, SCREEN_HEIGHT))
-
+                                        (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     def __init__(self, level_in):
         """ Constructor. Create all our attributes and initialize
@@ -50,6 +50,12 @@ class Game(object):
         self.player = Player(level_in=self.level)
         self.lives = self.player.lives
         self.all_sprites_list.add(self.player)
+
+        for i in range(len(self.x_pos_list) - 1):
+            road_line_x = (self.x_pos_list[i] + self.x_pos_list[i + 1]) / 2 - 2
+            for j in range(RoadTick.RESET_Y, SCREEN_HEIGHT, RoadTick.SPACER):
+                tick = RoadTick(road_line_x, j, level_in=self.level)
+                self.all_sprites_list.add(tick)
 
     def process_events(self):
         """ Process all of the events. Return a "True" if we need
@@ -152,7 +158,7 @@ class Game(object):
         screen.blit(name_text, [center_x, center_y])
         for i in range(len(Game.INSTRUCTIONS)):
             instruction_text = font.render(Game.INSTRUCTIONS[i], True, WHITE)
-            screen.blit(instruction_text, [60, center_y + 50 + (20*i)])
+            screen.blit(instruction_text, [60, center_y + 50 + (20 * i)])
 
         # Draw a red car, chased by some yellow cars, heading towards some walls
         # screen.blit(pygame.Surface([Wall.WIDTH, Wall.HEIGHT]), [500, 70])
@@ -237,6 +243,6 @@ class Game(object):
         pygame.draw.rect(screen_in, BLACK, [self.x_pos_list[0] - Wall.WIDTH, 0,
                                             self.x_pos_list[-1] - self.x_pos_list[0] + Wall.WIDTH * 2,
                                             SCREEN_HEIGHT], 0)
-        for i in range(len(self.x_pos_list)-1):
-            road_line_x = (self.x_pos_list[i] + self.x_pos_list[i+1]) / 2 - 2
-            pygame.draw.rect(screen_in, WHITE, [road_line_x, 0, 5, SCREEN_HEIGHT], 0)
+        # for i in range(len(self.x_pos_list) - 1):
+        #     road_line_x = (self.x_pos_list[i] + self.x_pos_list[i + 1]) / 2 - 2
+        #     pygame.draw.rect(screen_in, WHITE, [road_line_x, 0, 5, SCREEN_HEIGHT], 0)
