@@ -243,6 +243,3 @@ class Game(object):
         pygame.draw.rect(screen_in, BLACK, [self.x_pos_list[0] - Wall.WIDTH, 0,
                                             self.x_pos_list[-1] - self.x_pos_list[0] + Wall.WIDTH * 2,
                                             SCREEN_HEIGHT], 0)
-        # for i in range(len(self.x_pos_list) - 1):
-        #     road_line_x = (self.x_pos_list[i] + self.x_pos_list[i + 1]) / 2 - 2
-        #     pygame.draw.rect(screen_in, WHITE, [road_line_x, 0, 5, SCREEN_HEIGHT], 0)
