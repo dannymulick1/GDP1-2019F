@@ -170,26 +170,26 @@ class Game(object):
 
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
-
+        screen.fill(BLACK)
 
         if self.game_over:
             font = pygame.font.SysFont("helvetica", 25)
-            text = font.render("Game Over, press space to restart", True, BLACK)
+            text = font.render("Game Over, press space to restart", True, WHITE)
             center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
             center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
             screen.blit(text, [center_x, center_y])
             for i in range(len(Game.LOSE_TEXT)):
-                game_over_text = font.render(Game.LOSE_TEXT[i], True, BLACK)
+                game_over_text = font.render(Game.LOSE_TEXT[i], True, WHITE)
                 screen.blit(game_over_text, [60, center_y + 50 + (20 * i)])
 
         if self.game_won:
             font = pygame.font.SysFont("helvetica", 25)
-            text = font.render("You won! Press space to restart", True, BLACK)
+            text = font.render("You won! Press space to restart", True, WHITE)
             center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
             center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
             screen.blit(text, [center_x, center_y])
             for i in range(len(Game.WIN_TEXT)):
-                game_won_text = font.render(Game.WIN_TEXT[i], True, BLACK)
+                game_won_text = font.render(Game.WIN_TEXT[i], True, WHITE)
                 screen.blit(game_won_text, [60, center_y + 50 + (20 * i)])
 
         if not self.game_over and not self.game_won:
