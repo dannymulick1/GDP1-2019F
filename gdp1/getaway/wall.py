@@ -15,8 +15,9 @@ class Wall(pygame.sprite.Sprite):
     def __init__(self, x_in, y_in, level_in=0):
         """ Constructor, create the image of the block. """
         super().__init__()
-        self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
-        self.image.fill(YELLOW)
+        # self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
+        # self.image.fill(YELLOW)
+        self.image = pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT))
         self.rect = self.image.get_rect()
         self.x_pos = Player.x_pos_list[level_in]
         self.rect.x = self.x_pos[x_in] - Wall.WIDTH / 2

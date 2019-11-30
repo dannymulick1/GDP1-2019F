@@ -3,6 +3,8 @@ Getaway! The driving, wall avoiding game
 Author: Danny Mulick
 Sources:
     - Images: Obtained from OpenGameArt.org
+           - Roadblocks: http://pancakebobapps.wix.com/apps
+             https://opengameart.org/content/police-chase-pack
     - Audio:
       - Caffeine and Chaos Forever: Kaminakat https://www.newgrounds.com/audio/listen/859250
 
