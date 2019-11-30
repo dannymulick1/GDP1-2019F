@@ -7,16 +7,14 @@ from player import Player
 class Wall(pygame.sprite.Sprite):
     """ This class represents a wall made to oppose our player. """
     WIDTH = 60
-    HEIGHT = 20
+    HEIGHT = 40
     SPEED = [2, 3, 4]
-    EASY_SPACER = 140
+    SPACER = 150
     RESET_Y = -100
 
     def __init__(self, x_in, y_in, level_in=0):
         """ Constructor, create the image of the block. """
         super().__init__()
-        # self.image = pygame.Surface([Wall.WIDTH, Wall.HEIGHT])
-        # self.image.fill(YELLOW)
         self.image = pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT))
         self.rect = self.image.get_rect()
         self.x_pos = Player.x_pos_list[level_in]

@@ -43,7 +43,7 @@ class Game(object):
 
         # Create the block sprites
         for i in range(10):
-            wall_group = WallGroup(-Wall.EASY_SPACER * i, level_in=self.level)
+            wall_group = WallGroup(-Wall.SPACER * i, level_in=self.level)
             self.wall_list.append(wall_group)
 
         # Create the player
@@ -209,7 +209,6 @@ class Game(object):
 
     def display_feedback(self, screen_in):
         """ Display feedback about the current game session, score and remaining lives"""
-        # pygame.draw.rect(screen_in, BLUE, [FEEDBACK_X, FEEDBACK_Y, 140, 100], 0)
         screen_in.blit(pygame.image.load("images/road_sign.png"), [FEEDBACK_X, FEEDBACK_Y])
         score_str = "Score: " + str(self.score)
         font = pygame.font.SysFont("helvetica", 25)
@@ -234,7 +233,7 @@ class Game(object):
         wall_sprite = wall_group_first.sprites()[0]
         # Basically remove the 0th element, but add it to the end using the y from the last one
         self.wall_list.pop(0)
-        new_wall_group = WallGroup(wall_group_last_y - Wall.EASY_SPACER, level_in=self.level)
+        new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER, level_in=self.level)
         self.wall_list.append(new_wall_group)
 
     def create_background(self, screen_in):
