@@ -32,7 +32,7 @@ class Game(object):
         self.score = 0
         self.level = level_in
         self.x_pos_list = Player.x_pos_list[level_in]
-        self.game_over = False
+        self.game_over = True
         self.game_won = False
         self.done = False
         self.splash = True
@@ -136,6 +136,8 @@ class Game(object):
                     self.game_won = True
                     self.level = 0
                     pygame.mixer.music.fadeout(200)
+                    pygame.mixer.music.load("audio/807025_Victory-Punching-Queen-OST.mp3")
+                    pygame.mixer.music.play(1, 0.0)
                 else:
                     self.__init__(self.level)
 
@@ -184,23 +186,44 @@ class Game(object):
 
         if self.game_over:
             font = pygame.font.SysFont("helvetica", 25)
-            text = font.render("Game Over, press space to restart", True, WHITE)
+            text = font.render("Game Over, press Space to restart", True, WHITE)
             center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
             center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
             screen.blit(text, [center_x, center_y])
             for i in range(len(Game.LOSE_TEXT)):
                 game_over_text = font.render(Game.LOSE_TEXT[i], True, WHITE)
-                screen.blit(game_over_text, [60, center_y + 50 + (20 * i)])
+                screen.blit(game_over_text, [60, center_y + 50 + (25 * i)])
+
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [500, 50])
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [420, 50])
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [580, 50])
+
+            screen.blit(pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50)), [520, 110])
+
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [420, 110])
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [580, 110])
+
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [500, 180])
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [420, 180])
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [580, 180])
 
         if self.game_won:
             font = pygame.font.SysFont("helvetica", 25)
-            text = font.render("You won! Press space to restart", True, WHITE)
+            text = font.render("You won! Press Space to restart", True, WHITE)
             center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
             center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
             screen.blit(text, [center_x, center_y])
             for i in range(len(Game.WIN_TEXT)):
                 game_won_text = font.render(Game.WIN_TEXT[i], True, WHITE)
-                screen.blit(game_won_text, [60, center_y + 50 + (20 * i)])
+                screen.blit(game_won_text, [60, center_y + 50 + (25 * i)])
 
         if not self.game_over and not self.game_won:
             # Create background
