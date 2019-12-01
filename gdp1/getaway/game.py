@@ -114,7 +114,7 @@ class Game(object):
                                 wall_group.score_checked = True
 
                     if wall.rect.y > SCREEN_HEIGHT:
-                        self.handle_wall_reset(wall_group)
+                        self.handle_wall_reset()
                     break
 
                 # See if the player block has collided with anything.
@@ -227,9 +227,8 @@ class Game(object):
         level_text = font.render(level_str, True, WHITE)
         screen_in.blit(level_text, [level_x, level_y])
 
-    def handle_wall_reset(self, wall_group_first):
+    def handle_wall_reset(self):
         wall_group_last_y = self.wall_list[-1].sprites()[0].rect.y
-        # for wall_sprite in wall_group_first.sprites():
         # Basically remove the 0th element, but add it to the end using the y from the last one
         self.wall_list.pop(0)
         new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER, level_in=self.level)
