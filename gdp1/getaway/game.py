@@ -32,7 +32,7 @@ class Game(object):
         self.score = 0
         self.level = level_in
         self.x_pos_list = Player.x_pos_list[level_in]
-        self.game_over = True
+        self.game_over = False
         self.game_won = False
         self.done = False
         self.splash = True
@@ -77,6 +77,7 @@ class Game(object):
                     self.player.move_right()
                 if event.key == pygame.K_SPACE:
                     if self.game_over or self.game_won:
+                        pygame.mixer.music.stop()
                         self.__init__(self.level)
 
         return False
@@ -224,6 +225,14 @@ class Game(object):
             for i in range(len(Game.WIN_TEXT)):
                 game_won_text = font.render(Game.WIN_TEXT[i], True, WHITE)
                 screen.blit(game_won_text, [60, center_y + 50 + (25 * i)])
+
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [500, 350])
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [420, 350])
+            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                        [580, 350])
+            screen.blit(pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50)), [520, 110])
 
         if not self.game_over and not self.game_won:
             # Create background
