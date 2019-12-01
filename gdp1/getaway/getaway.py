@@ -7,6 +7,8 @@ Sources:
              https://opengameart.org/content/police-chase-pack
     - Audio:
       - Caffeine and Chaos Forever: Kaminakat https://www.newgrounds.com/audio/listen/859250
+      - Victory: Vaultkid https://www.newgrounds.com/audio/listen/807025
+      - Game Over: EnNinja https://www.newgrounds.com/audio/listen/623108
 
 b. Version - 1.0.1
 c. What the code does

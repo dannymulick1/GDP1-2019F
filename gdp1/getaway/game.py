@@ -1,6 +1,6 @@
 import pygame
 
-from constants import SCREEN_HEIGHT, BLACK, WHITE, SCREEN_WIDTH, YELLOW, FEEDBACK_X, FEEDBACK_Y
+from constants import SCREEN_HEIGHT, BLACK, WHITE, SCREEN_WIDTH, FEEDBACK_X, FEEDBACK_Y
 from player import Player
 from road_tick import RoadTick
 from wall import Wall
@@ -32,7 +32,7 @@ class Game(object):
         self.score = 0
         self.level = level_in
         self.x_pos_list = Player.x_pos_list[level_in]
-        self.game_over = True
+        self.game_over = False
         self.game_won = False
         self.done = False
         self.splash = True
@@ -127,6 +127,8 @@ class Game(object):
             if self.lives < 1:
                 self.game_over = True
                 pygame.mixer.music.fadeout(200)
+                pygame.mixer.music.load("audio/623108_Game-Over-gtwlt.mp3")
+                pygame.mixer.music.play(1, 0.0)
 
             if self.score >= Game.SCORE_LIMITS[self.level]:
                 self.level += 1
