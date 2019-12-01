@@ -9,7 +9,7 @@ class Wall(pygame.sprite.Sprite):
     WIDTH = 60
     HEIGHT = 40
     SPEED = [2, 3, 4]
-    SPACER = 150
+    SPACER = 170
     RESET_Y = -100
 
     def __init__(self, x_in, y_in, level_in=0):

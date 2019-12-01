@@ -213,7 +213,7 @@ class Game(object):
         score_str = "Score: " + str(self.score)
         font = pygame.font.SysFont("helvetica", 25)
         score_text = font.render(score_str, True, WHITE)
-        score_x = FEEDBACK_X + 5
+        score_x = FEEDBACK_X + 10
         score_y = FEEDBACK_Y + 5
         screen_in.blit(score_text, [score_x, score_y])
         lives_str = "Lives: " + str(self.lives)
