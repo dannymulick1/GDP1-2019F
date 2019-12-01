@@ -1,0 +1,14 @@
+Like the concept, the execution, and in general the progress.
+
+Here's some suggestions for improvement:
+
+1. Make the roadblocks more than a block, graphic primitive. Try another car, truck, trash, or something to make the game more fun.
+
+2. Vary the roadblocks, that is, have 10-20 different ones that you bring in randomly.
+
+3. What would be really cool is if you make the road bend and curve rather than plain straight.
+
+4. You have all this extra space, the off-road, that's idle, maybe you want to put some stands, trees, or something other there.
+
+5. BTW, I would make the lane separators dashed -- like they are in the US . It just adds more realism and variability.
+

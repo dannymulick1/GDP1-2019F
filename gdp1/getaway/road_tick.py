@@ -24,8 +24,6 @@ class RoadTick(pygame.sprite.Sprite):
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
             the screen. """
-        # self.rect.y = Wall.RESET_Y
-        # self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
         self.rect.y = RoadTick.RESET_Y
 
     def update(self):

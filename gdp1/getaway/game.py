@@ -1,6 +1,7 @@
 import pygame
 
-from constants import SCREEN_HEIGHT, BLACK, WHITE, SCREEN_WIDTH, FEEDBACK_X, FEEDBACK_Y
+from constants import SCREEN_HEIGHT, BLACK, WHITE, SCREEN_WIDTH, FEEDBACK_X, \
+    FEEDBACK_Y
 from player import Player
 from road_tick import RoadTick
 from wall import Wall
@@ -13,7 +14,8 @@ class Game(object):
         class. """
     SCORE_LIMITS = [15, 20, 25]
     INSTRUCTIONS = ["You are an agent on the run, and today is your escape.",
-                    "Drive away to safety while avoiding the barriers set up to stop you.",
+                    "Drive away to safety while avoiding the barriers set "
+                    "up to stop you.",
                     "Use your arrow keys or A and D to avoid the walls.",
                     "Press space to continue..."]
     WIN_TEXT = ["You have escaped your pursuers and lived another day",
@@ -22,8 +24,9 @@ class Game(object):
     LOSE_TEXT = ["You have been captured!",
                  "Try again another day to make your...",
                  "Getaway!"]
-    BACKGROUND = pygame.transform.scale(pygame.image.load("images/background/completeBackground.png"),
-                                        (SCREEN_WIDTH, SCREEN_HEIGHT))
+    BACKGROUND = pygame.transform.scale(
+        pygame.image.load("images/background/completeBackground.png"),
+        (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     def __init__(self, level_in):
         """ Constructor. Create all our attributes and initialize
@@ -61,7 +64,8 @@ class Game(object):
         """ Process all of the events. Return a "True" if we need
             to close the window. """
 
-        if not pygame.mixer.music.get_busy() and not self.game_over and not self.game_won:
+        if not pygame.mixer.music.get_busy() and not self.game_over \
+                and not self.game_won:
             pygame.mixer.music.load("audio/Caffeine & Chaos Forever.mp3")
             pygame.mixer.music.play(-1, 0.0)
 
@@ -109,7 +113,8 @@ class Game(object):
                 for wall in wall_group.sprites():
                     if wall is not None:
                         # This spawns an error, need to work on fixing
-                        if wall.rect.y > self.player.rect.y + self.player.rect.height:
+                        if wall.rect.y > self.player.rect.y + \
+                                self.player.rect.height:
                             if not wall_group.score_checked:
                                 self.score += 1
                                 wall_group.score_checked = True
@@ -119,7 +124,8 @@ class Game(object):
                     break
 
                 # See if the player block has collided with anything.
-                wall_hit_list = pygame.sprite.spritecollide(self.player, wall_group, True)
+                wall_hit_list = pygame.sprite.spritecollide(self.player,
+                                                            wall_group, True)
 
                 # Check the list of collisions.
                 for _ in wall_hit_list:
@@ -137,7 +143,8 @@ class Game(object):
                     self.game_won = True
                     self.level = 0
                     pygame.mixer.music.fadeout(200)
-                    pygame.mixer.music.load("audio/807025_Victory-Punching-Queen-OST.mp3")
+                    pygame.mixer.music.load(
+                        "audio/807025_Victory-Punching-Queen-OST.mp3")
                     pygame.mixer.music.play(1, 0.0)
                 else:
                     self.__init__(self.level)
@@ -165,19 +172,27 @@ class Game(object):
             instruction_text = font.render(Game.INSTRUCTIONS[i], True, WHITE)
             screen.blit(instruction_text, [60, center_y + 50 + (20 * i)])
 
-        # Draw a red car, chased by some yellow cars, heading towards some walls
-        screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                    [500, 50])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                    [420, 50])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                    [580, 50])
+        # Draw a red car, chased by some yellow cars,
+        # heading towards some walls
+        screen.blit(pygame.transform.scale(
+            pygame.image.load("images/barrier.png"),
+            (Wall.WIDTH, Wall.HEIGHT)), [500, 50])
+        screen.blit(pygame.transform.scale(
+            pygame.image.load("images/barrier.png"),
+            (Wall.WIDTH, Wall.HEIGHT)), [420, 50])
+        screen.blit(pygame.transform.scale(
+            pygame.image.load("images/barrier.png"),
+            (Wall.WIDTH, Wall.HEIGHT)), [580, 50])
 
-        screen.blit(pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50)), [500, 160])
+        screen.blit(pygame.transform.scale(
+            pygame.image.load("images/car_red.png"), (25, 50)), [500, 160])
 
-        screen.blit(pygame.transform.scale(pygame.image.load("images/car_yellow.png"), (25, 50)), [500, 350])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/car_blue.png"), (25, 50)), [540, 380])
-        screen.blit(pygame.transform.scale(pygame.image.load("images/car_yellow.png"), (25, 50)), [470, 400])
+        screen.blit(pygame.transform.scale(
+            pygame.image.load("images/car_yellow.png"), (25, 50)), [500, 350])
+        screen.blit(pygame.transform.scale(
+            pygame.image.load("images/car_blue.png"), (25, 50)), [540, 380])
+        screen.blit(pygame.transform.scale(
+            pygame.image.load("images/car_yellow.png"), (25, 50)), [470, 400])
 
         pygame.display.flip()
 
@@ -187,7 +202,8 @@ class Game(object):
 
         if self.game_over:
             font = pygame.font.SysFont("helvetica", 25)
-            text = font.render("Game Over, press Space to restart", True, WHITE)
+            text = \
+                font.render("Game Over, press Space to restart", True, WHITE)
             center_x = (SCREEN_WIDTH // 2) - (text.get_width() // 2)
             center_y = (SCREEN_HEIGHT // 2) - (text.get_height() // 2)
             screen.blit(text, [center_x, center_y])
@@ -195,26 +211,35 @@ class Game(object):
                 game_over_text = font.render(Game.LOSE_TEXT[i], True, WHITE)
                 screen.blit(game_over_text, [60, center_y + 50 + (25 * i)])
 
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [500, 50])
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [420, 50])
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [580, 50])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [500, 50])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [420, 50])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [580, 50])
 
-            screen.blit(pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50)), [520, 110])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/car_red.png"), (25, 50)), [520, 110])
 
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [420, 110])
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [580, 110])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [420, 110])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [580, 110])
 
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [500, 180])
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [420, 180])
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [580, 180])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [500, 180])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [420, 180])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [580, 180])
 
         if self.game_won:
             font = pygame.font.SysFont("helvetica", 25)
@@ -226,13 +251,17 @@ class Game(object):
                 game_won_text = font.render(Game.WIN_TEXT[i], True, WHITE)
                 screen.blit(game_won_text, [60, center_y + 50 + (25 * i)])
 
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [500, 350])
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [420, 350])
-            screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
-                        [580, 350])
-            screen.blit(pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50)), [520, 110])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [500, 350])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [420, 350])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/barrier.png"),
+                (Wall.WIDTH, Wall.HEIGHT)), [580, 350])
+            screen.blit(pygame.transform.scale(
+                pygame.image.load("images/car_red.png"), (25, 50)), [520, 110])
 
         if not self.game_over and not self.game_won:
             # Create background
@@ -244,8 +273,10 @@ class Game(object):
         pygame.display.flip()
 
     def display_feedback(self, screen_in):
-        """ Display feedback about the current game session, score and remaining lives"""
-        screen_in.blit(pygame.image.load("images/road_sign.png"), [FEEDBACK_X, FEEDBACK_Y])
+        """ Display feedback about the current game session,
+        score and remaining lives"""
+        screen_in.blit(pygame.image.load("images/road_sign.png"),
+                       [FEEDBACK_X, FEEDBACK_Y])
         score_str = "Score: " + str(self.score)
         font = pygame.font.SysFont("helvetica", 25)
         score_text = font.render(score_str, True, WHITE)
@@ -265,14 +296,19 @@ class Game(object):
 
     def handle_wall_reset(self):
         wall_group_last_y = self.wall_list[-1].sprites()[0].rect.y
-        # Basically remove the 0th element, but add it to the end using the y from the last one
+        # Basically remove the 0th element, but add it to the end
+        # using the y from the last one
         self.wall_list.pop(0)
-        new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER, level_in=self.level)
+        new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER,
+                                   level_in=self.level)
         self.wall_list.append(new_wall_group)
 
     def create_background(self, screen_in):
         # self.all_sprites_list.add()
         screen_in.blit(Game.BACKGROUND, [0, 0])
-        pygame.draw.rect(screen_in, BLACK, [self.x_pos_list[0] - Wall.WIDTH, 0,
-                                            self.x_pos_list[-1] - self.x_pos_list[0] + Wall.WIDTH * 2,
+        pygame.draw.rect(screen_in, BLACK, [self.x_pos_list[0] -
+                                            Wall.WIDTH, 0,
+                                            self.x_pos_list[-1] -
+                                            self.x_pos_list[0] +
+                                            Wall.WIDTH * 2,
                                             SCREEN_HEIGHT], 0)

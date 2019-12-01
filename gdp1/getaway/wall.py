@@ -15,7 +15,8 @@ class Wall(pygame.sprite.Sprite):
     def __init__(self, x_in, y_in, level_in=0):
         """ Constructor, create the image of the block. """
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT))
+        self.image = pygame.transform.scale(
+            pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT))
         self.rect = self.image.get_rect()
         self.x_pos = Player.x_pos_list[level_in]
         self.rect.x = self.x_pos[x_in] - Wall.WIDTH / 2
@@ -26,8 +27,6 @@ class Wall(pygame.sprite.Sprite):
     def reset_pos(self):
         """ Called when the block is 'collected' or falls off
             the screen. """
-        # self.rect.y = Wall.RESET_Y
-        # self.rect.x = Player.x_pos_list[random.randint(0, 2)] - Wall.WIDTH / 2
         self.checked = False
 
     def update(self):

@@ -6,29 +6,35 @@ Sources:
            - Roadblocks: http://pancakebobapps.wix.com/apps
              https://opengameart.org/content/police-chase-pack
     - Audio:
-      - Caffeine and Chaos Forever: Kaminakat https://www.newgrounds.com/audio/listen/859250
+      - Caffeine and Chaos Forever: Kaminakat
+         https://www.newgrounds.com/audio/listen/859250
       - Victory: Vaultkid https://www.newgrounds.com/audio/listen/807025
       - Game Over: EnNinja https://www.newgrounds.com/audio/listen/623108
 
 b. Version - 1.0.1
 c. What the code does
  - Splash screen appears and will press space to pass it
- - This game pus the player in the Getaway Car. It spawns the player, the obstacles, and moves them down
+ - This game pus the player in the Getaway Car. It spawns the player,
+    the obstacles, and moves them down
     the screen.
- - As the player progresses they collect points and pass barriers. Hitting barriers causes the player to lose a life
- - Collecting enough points makes the player pass the level and continue on, and losing all of their lives causes them
-   to lose the level and have to start it over
- - Pass all three levels to beat the game. As levels continue, the barriers get faster and faster, and adds a set of
-   lanes to allow for more options.
+ - As the player progresses they collect points and pass barriers. Hitting
+    barriers causes the player to lose a life
+ - Collecting enough points makes the player pass the level and continue on,
+    and losing all of their lives causes them
+    to lose the level and have to start it over
+ - Pass all three levels to beat the game. As levels continue, the barriers
+    get faster and faster, and adds a set of
+    lanes to allow for more options.
 d. A brief description of how to play the game
- - You play the game using either WASD or the arrow keys, moving left or right in order to avoid oncoming walls.
- - Score 15 points in order to win this level, or lose all three lives to lose it.
+ - You play the game using either WASD or the arrow keys, moving left or right
+    in order to avoid oncoming walls.
+ - Score 15 points in order to win this level, or lose all three lives to
+    lose it.
 e. What’s not working and known bugs and limitations at this stage
 
-f. What’s left at this stage, not what you might or might not do, etc. but what you plan to do
-  - Add more detail to game over and game won screens
-  - Add game over song
-  - Add game won song
+f. What’s left at this stage, not what you might or might not do, etc. but
+   what you plan to do
+
 """
 
 import pygame
