@@ -32,7 +32,7 @@ class Game(object):
         self.score = 0
         self.level = level_in
         self.x_pos_list = Player.x_pos_list[level_in]
-        self.game_over = False
+        self.game_over = True
         self.game_won = False
         self.done = False
         self.splash = True
@@ -161,10 +161,12 @@ class Game(object):
             screen.blit(instruction_text, [60, center_y + 50 + (20 * i)])
 
         # Draw a red car, chased by some yellow cars, heading towards some walls
-        # screen.blit(pygame.Surface([Wall.WIDTH, Wall.HEIGHT]), [500, 70])
-        pygame.draw.rect(screen, YELLOW, [500, 50, Wall.WIDTH, Wall.HEIGHT], 0)
-        pygame.draw.rect(screen, YELLOW, [420, 50, Wall.WIDTH, Wall.HEIGHT], 0)
-        pygame.draw.rect(screen, YELLOW, [580, 50, Wall.WIDTH, Wall.HEIGHT], 0)
+        screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                    [500, 50])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                    [420, 50])
+        screen.blit(pygame.transform.scale(pygame.image.load("images/barrier.png"), (Wall.WIDTH, Wall.HEIGHT)),
+                    [580, 50])
 
         screen.blit(pygame.transform.scale(pygame.image.load("images/car_red.png"), (25, 50)), [500, 160])
 
