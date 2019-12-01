@@ -1,6 +1,6 @@
 import pygame
 
-from constants import SCREEN_HEIGHT, BLACK, WHITE, SCREEN_WIDTH, YELLOW, SAND, BLUE, FEEDBACK_X, FEEDBACK_Y
+from constants import SCREEN_HEIGHT, BLACK, WHITE, SCREEN_WIDTH, YELLOW, FEEDBACK_X, FEEDBACK_Y
 from player import Player
 from road_tick import RoadTick
 from wall import Wall
@@ -230,7 +230,6 @@ class Game(object):
     def handle_wall_reset(self, wall_group_first):
         wall_group_last_y = self.wall_list[-1].sprites()[0].rect.y
         # for wall_sprite in wall_group_first.sprites():
-        wall_sprite = wall_group_first.sprites()[0]
         # Basically remove the 0th element, but add it to the end using the y from the last one
         self.wall_list.pop(0)
         new_wall_group = WallGroup(wall_group_last_y - Wall.SPACER, level_in=self.level)

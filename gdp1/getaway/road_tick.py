@@ -1,7 +1,6 @@
 import pygame
 
 from constants import WHITE, SCREEN_HEIGHT
-from player import Player
 
 
 class RoadTick(pygame.sprite.Sprite):

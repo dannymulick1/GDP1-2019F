@@ -1,6 +1,6 @@
 import pygame
 
-from constants import YELLOW, SCREEN_HEIGHT
+from constants import SCREEN_HEIGHT
 from player import Player
 
 
